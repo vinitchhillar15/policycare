@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PolicyCare – Insurance CRM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f6fb;--card:#fff;--tx:#14213d;--mut:#6b7691;--bd:#e3e8f2;--pri:#4f46e5;--pri2:#7c3aed;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--wa:#25d366}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1226;--card:#161d38;--tx:#eef1fb;--mut:#9aa6c7;--bd:#262f52}}
+:root[data-theme="dark"]{--bg:#0d1226;--card:#161d38;--tx:#eef1fb;--mut:#9aa6c7;--bd:#262f52}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+.hide{display:none!important}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}
+input,select{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card)}
+input:focus,select:focus{outline:2px solid var(--pri);outline-offset:1px}
+label{font-size:12px;font-weight:600;color:var(--mut);display:block;margin-bottom:4px}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 10%,#6d5dfc33,transparent 50%),radial-gradient(circle at 90% 90%,#7c3aed33,transparent 50%)}
+.lbox{width:100%;max-width:400px;background:var(--card);border:1px solid var(--bd);border-radius:24px;padding:28px;box-shadow:0 20px 50px #1a1f4a22}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px}
+.logo i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--pri),var(--pri2));display:grid;place-items:center;color:#fff;font-style:normal}
+.lbox p{color:var(--mut);margin:8px 0 18px}
+.otp{display:flex;gap:8px;justify-content:space-between}
+.otp input{text-align:center;font-size:20px;font-weight:700;padding:12px 0}
+.demo{background:#4f46e51a;border:1px dashed var(--pri);border-radius:12px;padding:10px;font-size:13px;margin:12px 0}
+/* app */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:12px 18px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+main{max-width:1100px;margin:0 auto;padding:18px 18px 110px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.st{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px}
+.st b{display:block;font-size:24px}.st span{color:var(--mut);font-size:12px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.bar input{flex:1;min-width:180px}.bar select{width:auto}
+.list{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(310px,1fr))}
+.pc{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px}
+.pc h3{margin:0;font-size:16px}.pc small{color:var(--mut)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.t-ok{background:#16a34a22;color:var(--ok)}.t-warn{background:#d9770622;color:var(--warn)}.t-bad{background:#dc262622;color:var(--bad)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:12px 0;font-size:13px}
+.kv span{color:var(--mut);display:block;font-size:11px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.wa{background:var(--wa);color:#fff}.call{background:#0ea5e9;color:#fff}.pdf{background:#ef4444;color:#fff}
+.empty{text-align:center;color:var(--mut);padding:50px 10px;grid-column:1/-1}
+/* modal */
+#modal{position:fixed;inset:0;background:#0009;z-index:20;display:grid;place-items:end center;padding:0}
+.sheet{background:var(--card);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px}
+@media(min-width:700px){#modal{place-items:center;padding:20px}.sheet{border-radius:22px}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid .full{grid-column:1/-1}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.fab{position:fixed;left:50%;transform:translateX(-50%);white-space:nowrap;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:6;box-shadow:0 10px 24px #4f46e566;padding:14px 20px;border-radius:99px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px}
+.tabs{display:flex;gap:6px;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:14px}.tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:9px;font-weight:600;cursor:pointer;color:var(--mut)}.tabs button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 4px #0002}.fl{display:block;margin-top:6px;color:var(--mut);font-size:12px}
+
+#home{min-height:100vh}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:56px 0 36px}
+@media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:32px}}
+.hbg{background:radial-gradient(circle at 15% 0%,#6d5dfc2e,transparent 55%),radial-gradient(circle at 95% 60%,#7c3aed26,transparent 50%)}
+.hero h1{font-size:clamp(32px,5.5vw,54px);line-height:1.08;margin:0 0 14px;letter-spacing:-.02em}
+.grad{background:linear-gradient(135deg,var(--pri),var(--pri2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);font-size:18px;margin:0 0 22px;max-width:520px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn.lg{padding:14px 24px;font-size:16px;border-radius:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--bd);color:var(--mut)}
+.mock .pc{box-shadow:0 24px 60px #4f46e52e}
+.mock .pc+.pc{margin:-8px 0 0 26px}
+.cap{display:block;text-align:center;color:var(--mut);font-size:11px;margin-top:10px}
+.sec{padding:44px 0}
+.sec h2{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px;text-align:center;letter-spacing:-.01em}
+.sec .sub{color:var(--mut);text-align:center;margin:0 auto 28px;max-width:560px}
+.feats,.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.ft,.sp{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:20px}
+.ft i{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-size:22px;background:#4f46e51f;margin-bottom:12px}
+.ft h3,.sp h3{margin:0 0 6px;font-size:16px}.ft p,.sp p{margin:0;color:var(--mut);font-size:14px}
+.sp b{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;margin-bottom:10px}
+.band{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:24px;padding:38px 22px;text-align:center;margin:12px 0 40px}
+.band h2{margin:0 0 8px;font-size:clamp(22px,3.5vw,32px)}.band p{margin:0 0 18px;opacity:.92}
+.band .btn{background:#fff;color:var(--pri)}
+.foot{border-top:1px solid var(--bd);padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--mut);font-size:13px}
+.back{display:inline-block;margin-bottom:12px;font-size:13px;color:var(--mut);cursor:pointer}
+.rcard{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px}
+.rcard h3{margin:0 0 4px;font-size:15px}.rcard .hint{color:var(--mut);font-size:12px;margin:0 0 10px}
+.mr{display:grid;grid-template-columns:120px 1fr 90px 100px;gap:10px;align-items:center;padding:8px 6px;border-radius:10px;cursor:pointer;font-size:14px}
+.mr:hover{background:var(--bg)}
+.mb{height:10px;background:var(--bg);border-radius:99px;overflow:hidden}.mb i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:99px}
+.mp{text-align:right;color:var(--mut)}
+@media(max-width:520px){.mr{grid-template-columns:88px 1fr 70px}.mr .mp{display:none}}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:620px){.rg{grid-template-columns:1fr}}
+.gr{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:14px}.gr:last-child{border:0}
+.lr{display:grid;grid-template-columns:96px 1fr auto;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}.lr:last-child{border:0}.lr small{color:var(--mut);display:block}
+.qrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.logo{cursor:pointer}
+.st.click{cursor:pointer;transition:.15s}.st.click:hover{border-color:var(--pri)}.st.sel{outline:2px solid var(--pri)}
+.st small{display:block;font-size:10px;color:var(--mut);margin-top:2px}
+#cm{position:fixed;inset:0;background:#0009;z-index:25;display:grid;place-items:center;padding:20px}
+.cbox{background:var(--card);border-radius:18px;padding:22px;max-width:380px;width:100%}
+.btn.danger{background:var(--bad)}
+#im{position:fixed;inset:0;background:#0009;z-index:20;display:grid;place-items:end center}
+@media(min-width:700px){#im{place-items:center;padding:20px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<section id="home">
+  <nav class="nav">
+    <div class="logo" onclick="window.scrollTo(0,0)"><i>✦</i>PolicyCare</div>
+    <div id="hn" style="display:flex;gap:8px"><button class="btn ghost sm" onclick="showLogin('in')">Log in</button><button class="btn sm" onclick="showLogin('up')">Get started</button></div>
+  </nav>
+  <div class="hbg"><div class="wrap hero">
+    <div>
+      <h1>Every policy. Every renewal. <span class="grad">One simple place.</span></h1>
+      <p>PolicyCare is a free CRM for insurance agents. Save customer policies from every company, track renewals and message clients on WhatsApp in one tap.</p>
+      <div class="cta"><button class="btn lg" onclick="showLogin('up')">Create free account</button><button class="btn ghost lg" onclick="showLogin('in')">Log in</button></div>
+      <div class="chips"><span class="chip">100% free to use</span><span class="chip">Works on phone &amp; laptop</span><span class="chip">Your data stays private</span></div>
+    </div>
+    <div class="mock">
+      <div class="pc"><div class="row"><div><h3>Rajesh Sharma</h3><small>+91 98XXXXXX10</small></div><span class="tag t-warn">12 days left</span></div>
+        <div class="kv"><div><span>Company</span>HDFC Ergo</div><div><span>Type</span>Motor</div><div><span>Premium</span>₹14,250</div><div><span>Expiry</span>01 Dec 2026</div></div>
+        <div class="acts"><span class="btn sm wa">WhatsApp</span><span class="btn sm call">Call</span><span class="btn sm ghost">Policy copy</span></div></div>
+      <div class="pc"><div class="row"><div><h3>Sunita Verma</h3><small>+91 97XXXXXX45</small></div><span class="tag t-ok">Active</span></div>
+        <div class="kv"><div><span>Company</span>Star Health</div><div><span>Type</span>Health</div><div><span>Premium</span>₹22,800</div><div><span>Expiry</span>14 Aug 2027</div></div></div>
+      <span class="cap">Sample data for preview</span>
+    </div>
+  </div></div>
+  <div class="wrap sec">
+    <h2>Everything an agent needs</h2>
+    <p class="sub">Stop searching through WhatsApp chats and paper files. Keep every customer policy ready in seconds.</p>
+    <div class="feats">
+      <div class="ft"><i>🗂️</i><h3>All policies in one place</h3><p>Motor, health, life and more, from every insurance company you work with.</p></div>
+      <div class="ft"><i>⏰</i><h3>Renewals at a glance</h3><p>See which policies expire in the next 30 days, and which have already expired.</p></div>
+      <div class="ft"><i>💬</i><h3>WhatsApp &amp; call in one tap</h3><p>Send a ready renewal message or call the customer straight from the policy card.</p></div>
+      <div class="ft"><i>📎</i><h3>Policy copy storage</h3><p>Upload the policy PDF with each record and open it any time, on any device.</p></div>
+      <div class="ft"><i>💰</i><h3>Payment tracking</h3><p>Record premium and payment received, and see the balance due for every customer.</p></div>
+      <div class="ft"><i>📱</i><h3>Laptop and mobile</h3><p>Log in with your mobile number and password. Your data syncs across devices.</p></div>
+    </div>
+  </div>
+  <div class="wrap sec">
+    <h2>Get started in 3 steps</h2>
+    <p class="sub">No setup, no payment, no software to install.</p>
+    <div class="steps">
+      <div class="sp"><b>1</b><h3>Create your account</h3><p>Use your mobile number and a password.</p></div>
+      <div class="sp"><b>2</b><h3>Add your policies</h3><p>Fill in the details and attach the policy PDF.</p></div>
+      <div class="sp"><b>3</b><h3>Follow up on renewals</h3><p>Filter expiring policies and message customers on WhatsApp.</p></div>
+    </div>
+  </div>
+  <div class="wrap"><div class="band"><h2>Ready to organise your policies?</h2><p>Create your free PolicyCare account in under a minute.</p><button class="btn lg" onclick="showLogin('up')">Get started free</button></div></div>
+  <footer class="foot">© 2026 PolicyCare · Built for insurance agents</footer>
+</section>
+
+<section id="login" class="hide">
+  <div class="lbox">
+    <div class="logo" onclick="showHome()"><i>✦</i>PolicyCare</div>
+    <a class="back" onclick="showHome()">← Back to home</a>
+    <p id="lp">All your policies in one place. Log in with your mobile number and password.</p>
+    <div class="tabs"><button id="tin" class="on" onclick="setMode('in')">Log in</button><button id="tup" onclick="setMode('up')">Create account</button></div>
+    <label>Mobile number</label>
+    <input id="ph" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="username">
+    <label style="margin-top:12px">Password</label>
+    <input id="pw" type="password" placeholder="At least 6 characters" autocomplete="current-password">
+    <div id="cw" class="hide"><label style="margin-top:12px">Confirm password</label><input id="pw2" type="password" autocomplete="new-password"></div>
+    <div class="demo hide" id="demo"></div>
+    <button class="btn" id="go" style="width:100%;margin-top:14px" onclick="submitAuth()">Log in</button>
+  </div>
+</section>
+
+<section id="app" class="hide">
+  <header>
+    <div class="logo" onclick="goHome()" title="Go to home page"><i>✦</i>PolicyCare</div>
+    <div style="display:flex;gap:8px;align-items:center"><small id="cs" style="font-weight:600"></small><small id="who" style="color:var(--mut)"></small><button class="btn ghost sm" onclick="openImp()">Import Excel</button><button class="btn ghost sm" onclick="logout()">Logout</button></div>
+  </header>
+  <main>
+    <div class="tabs" style="max-width:360px"><button id="tPol" class="on" onclick="setView('pol')">Policies</button><button id="tRep" onclick="setView('rep')">Monthly report</button></div>
+    <div id="vPol">
+    <div class="bar"><input id="q" placeholder="Search by name, mobile, policy no. or vehicle no." oninput="render()"></div>
+    <div class="rcard"><h3>Time period</h3><p class="hint">Choose a period to see how many policies were booked in it.</p>
+      <div class="bar" style="align-items:flex-end;margin-bottom:10px">
+        <div style="flex:1;min-width:140px"><label>From date</label><input type="date" id="pf" onchange="setP()"></div>
+        <div style="flex:1;min-width:140px"><label>To date</label><input type="date" id="pt" onchange="setP()"></div>
+      </div>
+      <div class="qrow" style="margin:0">
+        <button class="btn ghost sm" onclick="pq('this')">This month</button>
+        <button class="btn ghost sm" onclick="pq('last')">Last month</button>
+        <button class="btn ghost sm" onclick="pq('3m')">Last 3 months</button>
+        <button class="btn ghost sm" onclick="pq('6m')">Last 6 months</button>
+        <button class="btn ghost sm" onclick="pq('year')">This year</button>
+        <button class="btn ghost sm" onclick="pq('all')">All time</button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div id="lh"></div>
+    <div class="list" id="list"></div>
+    </div>
+    <div id="vRep" class="hide">
+      <div class="bar" style="align-items:flex-end">
+        <div style="flex:1;min-width:150px"><label>From date</label><input type="date" id="rf" onchange="rep()"></div>
+        <div style="flex:1;min-width:150px"><label>To date</label><input type="date" id="rt" onchange="rep()"></div>
+      </div>
+      <div class="qrow">
+        <button class="btn ghost sm" onclick="quick('this')">This month</button>
+        <button class="btn ghost sm" onclick="quick('last')">Last month</button>
+        <button class="btn ghost sm" onclick="quick('3m')">Last 3 months</button>
+        <button class="btn ghost sm" onclick="quick('6m')">Last 6 months</button>
+        <button class="btn ghost sm" onclick="quick('year')">This year</button>
+        <button class="btn ghost sm" onclick="quick('all')">All time</button>
+      </div>
+      <div class="stats" id="rs"></div>
+      <div class="rcard"><h3>Month-wise policies booked</h3><p class="hint">Counted by policy start date (or the date you added it, if no start date). Tap a month to see only that month.</p><div id="rm"></div></div>
+      <div class="rg"><div class="rcard"><h3>By company</h3><div id="rc"></div></div><div class="rcard"><h3>By insurance type</h3><div id="rtp"></div></div></div>
+      <div class="rcard"><h3>Policies booked in this period</h3><div id="rl"></div></div>
+    </div>
+  </main>
+  <button class="btn fab" onclick="openForm()">＋ New Policy</button>
+</section>
+
+<div id="modal" class="hide" onclick="if(event.target===this)closeForm()">
+  <div class="sheet">
+    <h2 id="mt" style="margin:0 0 14px">New Policy</h2>
+    <div class="grid">
+      <div class="full"><label>Customer name</label><input id="name" list="dlName" autocomplete="off" onchange="afill('name')"><datalist id="dlName"></datalist></div>
+      <div><label>Mobile number</label><input id="mob" type="tel" inputmode="numeric" maxlength="10" list="dlMob" autocomplete="off" onchange="afill('mob')"><datalist id="dlMob"></datalist></div>
+      <div><label>Policy number</label><input id="pno"></div>
+      <div><label>Insurance company</label><input id="co" list="cos" placeholder="e.g. LIC, HDFC Ergo"><datalist id="cos"><option>LIC</option><option>HDFC Ergo</option><option>ICICI Lombard</option><option>Bajaj Allianz</option><option>New India Assurance</option><option>Star Health</option><option>Tata AIG</option><option>SBI General</option></datalist></div>
+      <div><label>Insurance type</label><select id="ty" onchange="vis()"><option>Motor</option><option>Health</option><option>Life</option><option>Term</option><option>Travel</option><option>Fire / Property</option><option>Other</option></select></div>
+      <div><label>Amount without GST (₹)</label><input id="am" type="number" inputmode="decimal" oninput="calcAm()"></div>
+      <div><label>Premium incl. 18% GST (₹)</label><input id="pr" type="number" inputmode="decimal"></div>
+      <div><label>Payout (%)</label><input id="pc" type="number" inputmode="decimal" oninput="calcPo()" placeholder="e.g. 50"></div>
+      <div><label>Payout amount (₹)</label><input id="po" type="number" inputmode="decimal"></div>
+      <div class="full" style="margin-top:-4px"><span class="fl">Premium = amount + 18% GST (auto-filled, you can edit it). Payout is calculated on the amount without GST.</span></div>
+      <div><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
+      <div><label>Policy start date</label><input id="sd" type="date" onchange="calcEd()"></div>
+      <div><label>Expiry / renewal date</label><input id="ed" type="date"></div>
+      <div class="vh"><label>Vehicle type</label><select id="vt"><option>Two-wheeler</option><option>Car</option><option>Commercial</option><option>Tractor</option><option>E-vehicle</option></select></div>
+      <div class="vh"><label>Vehicle model</label><input id="vm" placeholder="e.g. Swift VXi 2021" list="dlVm" autocomplete="off"><datalist id="dlVm"></datalist></div>
+      <div class="vh"><label>Vehicle number</label><input id="vn" placeholder="e.g. HR06AB1234" style="text-transform:uppercase" list="dlVn" autocomplete="off" onchange="afill('vn')"><datalist id="dlVn"></datalist></div>
+      <div class="full"><label>Policy copy (PDF, optional)</label><input id="file" type="file" accept="application/pdf,.pdf" onchange="pickFile(this)"><span class="fl" id="fn"></span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+      <button class="btn ghost" onclick="closeForm()">Cancel</button>
+      <button class="btn" onclick="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="im" class="hide" onclick="if(event.target===this)closeImp()"><div class="sheet">
+  <h2 style="margin:0 0 6px">Import from Excel</h2>
+  <p style="color:var(--mut);font-size:13px;margin:0 0 12px">Upload an .xlsx, .xls or .csv file with column names in the first row. Match the columns below, then import. Policies already in PolicyCare (same mobile + policy number) are skipped.</p>
+  <input type="file" id="imf" accept=".xlsx,.xls,.csv" onchange="impFile(this)">
+  <a class="back" onclick="impTemplate()" style="margin-top:8px">Download blank template (CSV)</a>
+  <div class="grid" id="imMap" style="margin-top:8px"></div>
+  <div id="imS" style="margin-top:12px;font-size:14px"></div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="closeImp()">Cancel</button><button class="btn hide" id="imGo" onclick="doImport()">Import</button></div>
+</div></div>
+
+<div id="cm" class="hide" onclick="if(event.target===this)closeCm()"><div class="cbox"><h3 style="margin:0 0 8px">Delete this policy?</h3><p id="cmt" style="color:var(--mut);margin:0 0 18px"></p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn ghost" onclick="closeCm()">Cancel</button><button class="btn danger" onclick="doDel()">Yes, delete</button></div></div></div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+/* ===== FREE CLOUD SETUP (optional) =====
+   Paste your Supabase Project URL and anon public key below to enable
+   mobile + password login, PDF storage and cloud sync across laptop and mobile.
+   Leave both empty to run in local demo mode (data stays in this browser). */
+var CFG={url:'https://zikzaacajuksvqojhzzi.supabase.co',key:'sb_publishable_ejt18cbmPdhMj9CC6Zv9Nw_nQYEkyWA'};
+var KEY='policycare_v1',SK='policycare_session',UK='policycare_users',sb=null,uid=null,pending=null;
+try{if(CFG.url&&CFG.key&&window.supabase)sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){}
+var data=[],editId=null,otp=null,mobile='',authed=false,renewFrom=null;
+function ls(op,k,v){try{if(op==='g')return localStorage.getItem(k);if(op==='s')localStorage.setItem(k,v);if(op==='d')localStorage.removeItem(k)}catch(e){}return null}
+function load(){try{data=JSON.parse(ls('g',KEY+'_'+mobile)||'[]')}catch(e){data=[]}}
+function persist(){if(sb)return;try{localStorage.setItem(KEY+'_'+mobile,JSON.stringify(data))}catch(e){toast('Browser storage is full. Remove some policy copies.')}}
+function toast(m){var t=document.createElement('div');t.id='toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function inr(n){return '₹'+(Number(n)||0).toLocaleString('en-IN')}
+function fd(d){if(!d)return '—';var x=new Date(d+'T00:00:00');return x.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
+function days(d){if(!d)return 9999;var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/864e5)}
+
+/* Auth */
+var mode='in';
+function showLogin(m){if(authed){toDash();return}$('home').classList.add('hide');$('login').classList.remove('hide');setMode(m);window.scrollTo(0,0)}
+function hnav(){$('hn').innerHTML=authed?'<button class="btn sm" onclick="toDash()">Open dashboard</button>':'<button class="btn ghost sm" onclick="showLogin(\'in\')">Log in</button><button class="btn sm" onclick="showLogin(\'up\')">Get started</button>'}
+function goHome(){$('app').classList.add('hide');$('login').classList.add('hide');$('home').classList.remove('hide');hnav();window.scrollTo(0,0)}
+function toDash(){$('home').classList.add('hide');$('login').classList.add('hide');$('app').classList.remove('hide');window.scrollTo(0,0)}
+function showHome(){$('login').classList.add('hide');$('home').classList.remove('hide');window.scrollTo(0,0)}
+function setMode(m){mode=m;$('tin').classList.toggle('on',m==='in');$('tup').classList.toggle('on',m==='up');$('cw').classList.toggle('hide',m==='in');$('go').textContent=m==='in'?'Log in':'Create account';$('pw').autocomplete=m==='in'?'current-password':'new-password'}
+['ph','pw','pw2'].forEach(function(i){$(i).addEventListener('keydown',function(e){if(e.key==='Enter')submitAuth()})});
+async function sha(t){try{var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('pc:'+t));return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0')}).join('')}catch(e){return btoa(unescape(encodeURIComponent(t)))}}
+async function submitAuth(){var m=$('ph').value.trim(),p=$('pw').value;
+if(!/^[6-9]\d{9}$/.test(m)){toast('Enter a valid 10-digit mobile number');return}
+if(p.length<6){toast('Password must be at least 6 characters');return}
+if(mode==='up'&&p!==$('pw2').value){toast('Passwords do not match');return}
+var email=m+'@policycare.app';
+if(sb){
+ if(mode==='up'){var r=await sb.auth.signUp({email:email,password:p});if(r.error){toast(r.error.message);return}
+  if(!r.data.session){toast('Account created. Turn off "Confirm email" in Supabase, then log in.');return}}
+ else{var r2=await sb.auth.signInWithPassword({email:email,password:p});if(r2.error){toast('Wrong mobile number or password');return}}
+ enter();return}
+var U={};try{U=JSON.parse(ls('g',UK)||'{}')}catch(e){}
+var h=await sha(p);
+if(mode==='up'){if(U[m]){toast('Account already exists. Please log in.');return}U[m]=h;ls('s',UK,JSON.stringify(U))}
+else if(U[m]!==h){toast('Wrong mobile number or password');return}
+ls('s',SK,m);enter()}
+async function enter(){
+if(sb){var g=await sb.auth.getSession();if(!g.data.session)return;uid=g.data.session.user.id;mobile=(g.data.session.user.email||'').split('@')[0]}
+else{var m=ls('g',SK);if(!m)return;mobile=m;load()}
+authed=true;$('home').classList.add('hide');$('login').classList.add('hide');$('app').classList.remove('hide');$('who').textContent='+91 '+mobile;render();
+if(sb){var r=await sb.from('pc_policies').select('id,data').order('updated_at',{ascending:false});
+if(r.error){cstat('⚠ Cloud load failed: '+r.error.message,1);toast('Could not load data: '+r.error.message)}else{data=r.data.map(function(x){var d=x.data;d.id=x.id;return d});render();cstat('☁ Synced · '+data.length+' in cloud')}}}
+function logout(){if(sb){sb.auth.signOut().then(function(){location.reload()})}else{ls('d',SK);location.reload()}}
+function cstat(t,bad){$('cs').textContent=t;$('cs').style.color=bad?'var(--bad)':'var(--ok)'}
+async function cloud(o){if(!sb)return;var d=Object.assign({},o);delete d.id;
+var r=await sb.from('pc_policies').upsert({id:o.id,user_id:uid,data:d,updated_at:new Date().toISOString()});if(r.error){cstat('⚠ Not saved to cloud: '+r.error.message,1);toast('Cloud save failed: '+r.error.message)}else cstat('☁ Saved to cloud')}
+async function cloudDel(p){if(!sb||!p)return;if(p.pdfPath)sb.storage.from('policy-pdfs').remove([p.pdfPath]);
+var r=await sb.from('pc_policies').delete().eq('id',p.id);if(r.error){cstat('⚠ Cloud delete failed: '+r.error.message,1)}else cstat('☁ Saved to cloud')}
+async function viewCopy(id){var p=data.find(function(x){return x.id===id});if(!p)return;var w=null;
+try{if(sb&&p.pdfPath){w=window.open('','_blank');
+var r=await sb.storage.from('policy-pdfs').createSignedUrl(p.pdfPath,300);if(r.error)throw r.error;
+if(w){w.location.href=r.data.signedUrl}else{location.href=r.data.signedUrl}}
+else if(p.pdfData){var bin=atob(p.pdfData.split(',')[1]),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);window.open(URL.createObjectURL(new Blob([u],{type:'application/pdf'})),'_blank')}
+else toast('No policy copy attached')}catch(e){if(w)w.close();toast('Could not open the policy copy: '+((e&&e.message)||e))}}
+
+/* form */
+function vis(){var m=$('ty').value==='Motor';document.querySelectorAll('.vh').forEach(function(e){e.classList.toggle('hide',!m)})}
+var F=['name','mob','pno','co','ty','am','pr','pc','po','pay','sd','ed','vt','vm','vn'];
+function pickFile(inp){var f=inp.files[0];pending=null;$('fn').textContent='';if(!f)return;
+if(f.type!=='application/pdf'&&!/\.pdf$/i.test(f.name)){toast('Please choose a PDF file');inp.value='';return}
+var max=sb?10:1.5;if(f.size>max*1048576){toast('PDF is too large (max '+max+' MB'+(sb?'':' in demo mode')+')');inp.value='';return}
+pending=f;$('fn').textContent='Selected: '+f.name}
+function openForm(id){editId=id||null;pending=null;renewFrom=null;var p=data.find(function(x){return x.id===id})||{};$('mt').textContent=id?'Edit Policy':'New Policy';
+F.forEach(function(k){$(k).value=p[k]==null?(k==='ty'?'Motor':k==='vt'?'Two-wheeler':''):p[k]});
+$('file').value='';$('fn').textContent=p.pdfName?'Attached: '+p.pdfName+' (choose a new file to replace it)':'';vis();sugg();$('modal').classList.remove('hide')}
+function closeForm(){$('modal').classList.add('hide')}
+async function save(){var o={};F.forEach(function(k){o[k]=$(k).value.trim()});
+if(!o.name||!/^\d{10}$/.test(o.mob)||!o.pno||!o.co||!o.ed){toast('Name, 10-digit mobile, policy no., company and expiry date are required');return}
+if(o.ty!=='Motor'){o.vt='';o.vm='';o.vn=''}else o.vn=(o.vn||'').toUpperCase().replace(/\s+/g,'');
+var old=editId?(data.find(function(x){return x.id===editId})||{}):{};
+o.id=editId||Date.now().toString(36);
+['pdfPath','pdfName','pdfData','renewOf'].forEach(function(k){if(old[k])o[k]=old[k]});
+if(pending){try{
+ if(sb){toast('Uploading PDF…');var path=uid+'/'+o.id+'_'+Date.now()+'.pdf';
+  var up=await sb.storage.from('policy-pdfs').upload(path,pending,{contentType:'application/pdf'});if(up.error)throw up.error;
+  if(old.pdfPath)sb.storage.from('policy-pdfs').remove([old.pdfPath]);o.pdfPath=path;delete o.pdfData}
+ else{o.pdfData=await new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=rej;r.readAsDataURL(pending)});delete o.pdfPath}
+ o.pdfName=pending.name}catch(e){toast('PDF upload failed: '+(e.message||'error'));return}}
+if(!editId&&renewFrom)o.renewOf=renewFrom;renewFrom=null;
+if(editId){var i=data.findIndex(function(x){return x.id===editId});data[i]=o}else{data.unshift(o)}
+pending=null;persist();await cloud(o);closeForm();render();toast('Saved')}
+var delId=null;
+function del(id){var p=data.find(function(x){return x.id===id});if(!p)return;delId=id;$('cmt').innerHTML='<b>'+esc(p.name)+'</b> · '+esc(p.co)+' · '+esc(p.pno)+'<br>This cannot be undone.'+(p.pdfName?' The attached policy copy will also be removed.':'');$('cm').classList.remove('hide')}
+function closeCm(){delId=null;$('cm').classList.add('hide')}
+function doDel(){var p=data.find(function(x){return x.id===delId});closeCm();if(!p)return;data=data.filter(function(x){return x.id!==p.id});persist();cloudDel(p);render();toast('Policy deleted')}
+
+/* actions */
+function msgFor(p){var d=days(p.ed);var when=d<0?'expired on '+fd(p.ed):d===0?'expires today':'is due for renewal on '+fd(p.ed);
+return 'Hello '+p.name+',\nYour '+p.co+' '+p.ty+' policy ('+p.pno+(p.vm?', '+p.vm:'')+(p.vn?', '+p.vn:'')+') '+when+'.\nPremium: '+inr(p.pr)+'.\nPlease get in touch with us to renew. Thank you!'}
+function wa(id){var p=data.find(function(x){return x.id===id});window.open('https://wa.me/91'+p.mob+'?text='+encodeURIComponent(msgFor(p)),'_blank')}
+function waPay(id){var p=data.find(function(x){return x.id===id});if(!p)return;var du=dueAmt(p);
+var m='Hello '+p.name+',\nThis is a gentle reminder that a payment of '+inr(du)+' is pending for your '+p.co+' '+p.ty+' policy ('+p.pno+(p.vn?', '+p.vn:'')+').\nTotal premium: '+inr(p.pr)+'\nReceived so far: '+inr(p.pay)+'\nPlease pay at your earliest convenience. Thank you!';
+window.open('https://wa.me/91'+p.mob+'?text='+encodeURIComponent(m),'_blank')}
+function callp(id){var p=data.find(function(x){return x.id===id});location.href='tel:+91'+p.mob}
+async function pdf(id){var p=data.find(function(x){return x.id===id});
+try{var J=window.jspdf.jsPDF,d=new J();d.setFillColor(79,70,229);d.rect(0,0,210,28,'F');d.setTextColor(255);d.setFontSize(20);d.text('PolicyCare',14,18);d.setFontSize(10);d.text('Policy Summary',160,18);
+d.setTextColor(20);var rows=[['Customer',p.name],['Mobile','+91 '+p.mob],['Policy number',p.pno],['Insurance company',p.co],['Insurance type',p.ty]];
+if(p.vm||p.vn)rows.push(['Vehicle',[p.vt,p.vm,p.vn].filter(Boolean).join(' - ')]);
+rows.push(['Premium','Rs. '+(Number(p.pr)||0).toLocaleString('en-IN')],['Payment received','Rs. '+(Number(p.pay)||0).toLocaleString('en-IN')],['Balance','Rs. '+Math.max(0,(Number(p.pr)||0)-(Number(p.pay)||0)).toLocaleString('en-IN')],['Start date',fd(p.sd)],['Expiry / renewal',fd(p.ed)]);
+var y=46;d.setFontSize(12);rows.forEach(function(r){d.setTextColor(110);d.text(r[0],16,y);d.setTextColor(20);d.text(String(r[1]),80,y);d.setDrawColor(228);d.line(14,y+3,196,y+3);y+=12});
+d.setFontSize(9);d.setTextColor(130);d.text('Generated on '+new Date().toLocaleDateString('en-IN')+' via PolicyCare',14,285);
+var blob=d.output('blob'),fn='Policy_'+p.pno.replace(/[^\w-]/g,'')+'.pdf';
+var dl=null;try{dl=await claude.use('downloads')}catch(e){}
+if(dl){await dl.save({filename:fn,data:blob})}else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click()}
+}catch(e){if(!e||e.code!=='declined')toast('Could not save the PDF')}}
+
+/* Excel / CSV import */
+var IMP={rows:[],head:[],map:{},hi:0,res:null};
+var IF=[['name','Customer name',['customer name','name','customer','client','client name','insured name','insured','policy holder','policyholder','holder name']],
+['mob','Mobile number',['mobile number','mobile','mobile no','phone','phone no','phone number','contact','contact no','contact number','mob','whatsapp','whatsapp no']],
+['pno','Policy number',['policy number','policy no','policy','policy no.','policy num','policyno','pol no']],
+['co','Insurance company',['insurance company','company','insurer','company name','co','insurance co']],
+['ty','Insurance type',['insurance type','type','policy type','class','product','line of business','lob']],
+['am','Amount without GST',['amount without gst','amount','net premium','base premium','premium without gst','premium ex gst','basic premium','net amount']],
+['pr','Premium (with GST)',['premium incl 18 gst','premium','total premium','gross premium','premium amount','premium with gst','total amount']],
+['pc','Payout %',['payout percent','payout percentage','commission percent','commission percentage','payout pct','payout','commission percent']],
+['po','Payout amount',['payout amount','commission','commission amount','payout amt']],
+['pay','Payment received',['payment received','received','paid','amount received','payment','amount paid']],
+['sd','Policy start date',['policy start date','start date','start','from date','risk start date','issue date','policy date','date']],
+['ed','Expiry / renewal date',['expiry date','expiry','renewal date','end date','policy end date','due date','valid till','expiry renewal date','renewal','policy expiry date','policy expiry']],
+['vt','Vehicle type',['vehicle type','vehicle class','class of vehicle','veh type']],
+['vm','Vehicle model',['vehicle model','model','make model','make','vehicle','vehicle name','veh model']],
+['vn','Vehicle number',['vehicle number','vehicle no','registration','registration no','registration number','reg no','regn no','gadi no','gadi number','vehicle reg no','veh no','car no','rc no','vehicle registration']]];
+function norm(s){return String(s).toLowerCase().replace(/%/g,' percent ').replace(/[^a-z0-9]+/g,' ').trim()}
+function pad2(n){return String(n).padStart(2,'0')}
+function toIsoDate(v){if(v===null||v===undefined||v==='')return '';
+if(v instanceof Date&&!isNaN(v))return iso(new Date(v.getFullYear(),v.getMonth(),v.getDate()));
+if(typeof v==='number'){if(v>20000&&v<80000){var d=new Date(Math.round((v-25569)*864e5));return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1)+'-'+pad2(d.getUTCDate())}return ''}
+var s=String(v).trim(),m;
+if(m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))return m[1]+'-'+pad2(m[2])+'-'+pad2(m[3]);
+if(m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/)){var y=+m[3];if(y<100)y+=2000;return y+'-'+pad2(m[2])+'-'+pad2(m[1])}
+var d2=new Date(s);return isNaN(d2)?'':iso(d2)}
+function toNum(v){if(typeof v==='number')return isFinite(v)?v:'';var x=parseFloat(String(v).replace(/[₹,\s]|rs\.?/gi,''));return isNaN(x)?'':x}
+function pickType(t,hasVn){var x=String(t).toLowerCase();
+if(/motor|car|bike|two|2w|4w|vehicle|commercial|gcv|pcv|scooter|truck|taxi|tractor/.test(x))return 'Motor';
+if(/health|mediclaim|medical/.test(x))return 'Health';if(/term/.test(x))return 'Term';if(/life|endowment|ulip/.test(x))return 'Life';
+if(/travel/.test(x))return 'Travel';if(/fire|property|home|shop/.test(x))return 'Fire / Property';
+return hasVn?'Motor':'Other'}
+function pickVt(t){var x=String(t).toLowerCase();
+if(/two|2w|bike|scooter|moped/.test(x))return 'Two-wheeler';if(/tractor/.test(x))return 'Tractor';
+if(/e-|electric|\bev\b/.test(x))return 'E-vehicle';if(/commercial|truck|goods|gcv|pcv|taxi|bus/.test(x))return 'Commercial';
+if(/car|private|4w|four|suv|jeep/.test(x))return 'Car';return ''}
+function buildRow(r,map){var g=function(k){var i=map[k];return (i===''||i===undefined||i===null)?'':r[i]};var o={};
+o.name=String(g('name')).trim();o.mob=String(g('mob')).replace(/\D/g,'').slice(-10);
+o.pno=String(g('pno')).trim();o.co=String(g('co')).trim()||'Unknown';
+o.vn=String(g('vn')).toUpperCase().replace(/[^A-Z0-9]/g,'');
+o.ty=pickType(g('ty'),!!o.vn);
+if(o.ty==='Motor'){o.vt=pickVt(g('vt'))||pickVt(g('ty'))||pickVt(g('vm'));o.vm=String(g('vm')).trim()}else{o.vt='';o.vm='';o.vn=''}
+var am=toNum(g('am')),pr=toNum(g('pr')),pc=toNum(g('pc')),po=toNum(g('po')),pay=toNum(g('pay'));
+if(pc!==''&&pc>0&&pc<=1)pc=pc*100;
+if(am!==''&&pr==='')pr=am*1.18;
+if(po===''&&am!==''&&pc!=='')po=am*pc/100;
+o.am=am===''?'':n2(am);o.pr=pr===''?'':n2(pr);o.pc=pc===''?'':n2(pc);o.po=po===''?'':n2(po);o.pay=pay===''?'':n2(pay);
+o.sd=toIsoDate(g('sd'));o.ed=toIsoDate(g('ed'));
+if(!o.ed&&o.sd){var d=new Date(o.sd+'T00:00:00');o.ed=iso(new Date(d.getFullYear()+1,d.getMonth(),d.getDate()-1))}
+return o}
+function openImp(){IMP={rows:[],head:[],map:{},hi:0,res:null};$('imf').value='';$('imMap').innerHTML='';$('imS').innerHTML='';$('imGo').classList.add('hide');$('im').classList.remove('hide')}
+function closeImp(){$('im').classList.add('hide')}
+function impTemplate(){var h='Customer name,Mobile number,Policy number,Insurance company,Insurance type,Amount without GST,Premium,Payout %,Payout amount,Payment received,Policy start date,Expiry date,Vehicle type,Vehicle model,Vehicle number\r\nRajesh Sharma,9876543210,POL12345,HDFC Ergo,Motor,10000,11800,50,5000,11800,2026-01-15,2027-01-14,Car,Swift VXi,HR06AB1234\r\n';
+var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h],{type:'text/csv'}));a.download='PolicyCare_import_template.csv';a.click()}
+function impFile(inp){var f=inp.files[0];if(!f)return;if(!window.XLSX){toast('Excel reader could not load. Check your internet and try again.');return}
+var rd=new FileReader();rd.onload=function(){try{var wb=XLSX.read(rd.result,{type:'array'});var ws=wb.Sheets[wb.SheetNames[0]];
+var a=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});var hi=0;
+for(var i=0;i<Math.min(a.length,10);i++){if(a[i].filter(function(c){return String(c).trim()!==''}).length>=3){hi=i;break}}
+IMP.hi=hi;IMP.head=(a[hi]||[]).map(function(h){return String(h).trim()});
+IMP.rows=a.slice(hi+1).filter(function(r){return r.some(function(c){return String(c).trim()!==''})});
+if(IMP.rows.length>3000){toast('Only the first 3000 rows will be imported. Import the rest in another file.');IMP.rows=IMP.rows.slice(0,3000)}
+drawMap()}catch(e){toast('Could not read this file')}};rd.readAsArrayBuffer(f)}
+function setMap(k,v){IMP.map[k]=v===''?'':+v;impSum()}
+function drawMap(){var used={},hn=IMP.head.map(norm);IMP.map={};
+IF.forEach(function(f){var idx='';for(var i=0;i<hn.length;i++){if(used[i]||!hn[i])continue;if(f[2].some(function(s){return norm(s)===hn[i]})){idx=i;used[i]=1;break}}IMP.map[f[0]]=idx});
+$('imMap').innerHTML=IF.map(function(f){var req=['name','mob','pno'].indexOf(f[0])>-1||f[0]==='ed';
+return '<div><label>'+f[1]+(req?' *':'')+'</label><select onchange="setMap(\''+f[0]+'\',this.value)"><option value="">— skip —</option>'+IMP.head.map(function(h,i){return '<option value="'+i+'"'+(IMP.map[f[0]]===i?' selected':'')+'>'+esc(h||('Column '+(i+1)))+'</option>'}).join('')+'</select></div>'}).join('');
+impSum()}
+function impBuild(){var ex={};data.forEach(function(p){ex[p.mob+'|'+String(p.pno).toLowerCase()]=1});
+var ok=[],bad=[],dup=0,base=Date.now();
+IMP.rows.forEach(function(r,n){var o=buildRow(r,IMP.map);
+var why=!o.name?'name missing':!/^\d{10}$/.test(o.mob)?'mobile is not 10 digits':!o.pno?'policy number missing':!o.ed?'expiry date missing':'';
+if(why){bad.push('Row '+(n+IMP.hi+2)+': '+why);return}
+var k=o.mob+'|'+o.pno.toLowerCase();if(ex[k]){dup++;return}ex[k]=1;o.id=(base+ok.length).toString(36);ok.push(o)});
+return {ok:ok,bad:bad,dup:dup}}
+function impSum(){var r=IMP.res=impBuild(),h='<b>'+r.ok.length+'</b> of '+IMP.rows.length+' rows are ready to import.';
+if(r.dup)h+='<br>'+r.dup+' already exist or repeat in the file and will be skipped.';
+if(r.bad.length)h+='<br><span style="color:var(--bad)">'+r.bad.length+' rows will be skipped:</span> '+esc(r.bad.slice(0,5).join('; '))+(r.bad.length>5?'…':'');
+if(r.ok.length){var o=r.ok[0];h+='<br><small style="color:var(--mut)">Example: '+esc(o.name)+' · +91 '+esc(o.mob)+' · '+esc(o.co)+' · '+esc(o.ty)+(o.vn?' · '+esc(o.vn):'')+' · expiry '+fd(o.ed)+'</small>'}
+$('imS').innerHTML=h;$('imGo').textContent='Import '+r.ok.length+' policies';$('imGo').classList.toggle('hide',!r.ok.length)}
+async function doImport(){var r=IMP.res;if(!r||!r.ok.length)return;var ok=r.ok.slice();
+ok.slice().reverse().forEach(function(o){data.unshift(o)});persist();
+if(sb){var failed=false;var rows=ok.map(function(o){var d=Object.assign({},o);delete d.id;return {id:o.id,user_id:uid,data:d,updated_at:new Date().toISOString()}});
+toast('Saving to cloud…');
+for(var i=0;i<rows.length;i+=200){var x=await sb.from('pc_policies').upsert(rows.slice(i,i+200));if(x.error){failed=true;cstat('⚠ Import not fully saved: '+x.error.message,1);toast('Cloud save failed: '+x.error.message);break}}
+if(!failed)cstat('☁ Imported '+rows.length+' policies to cloud')}
+closeImp();render();toast(ok.length+' policies imported')}
+/* Suggestions from old policies */
+var COS=['LIC','HDFC Ergo','ICICI Lombard','Bajaj Allianz','New India Assurance','Star Health','Tata AIG','SBI General'];
+function opt(v,l){return '<option value="'+esc(v)+'">'+esc(l||'')+'</option>'}
+function sugg(){var names={},mobs={},vms={},cos=COS.slice();
+data.forEach(function(p){if(p.name&&!names[p.name.toLowerCase()])names[p.name.toLowerCase()]=p.name+'|'+p.mob;
+if(p.mob&&!mobs[p.mob])mobs[p.mob]=p.name;if(p.vm)vms[p.vm]=1;if(p.co&&cos.indexOf(p.co)<0)cos.push(p.co)});
+$('dlName').innerHTML=Object.keys(names).map(function(k){var a=names[k].split('|');return opt(a[0],a[1])}).join('');
+$('dlMob').innerHTML=Object.keys(mobs).map(function(m){return opt(m,mobs[m])}).join('');
+$('dlVm').innerHTML=Object.keys(vms).map(function(v){return opt(v)}).join('');
+$('cos').innerHTML=cos.map(function(c){return opt(c)}).join('');
+vnList()}
+function vnList(){var m=$('mob').value.trim(),seen={},h='';
+data.forEach(function(p){if(!p.vn||seen[p.vn])return;if(/^\d{10}$/.test(m)&&p.mob!==m)return;seen[p.vn]=1;h+=opt(p.vn,p.name+(p.vm?' · '+p.vm:''))});
+$('dlVn').innerHTML=h}
+function afill(src){if(editId)return;var v=$(src).value.trim();if(!v)return;var p=null;
+for(var i=0;i<data.length;i++){var x=data[i];
+if((src==='name'&&x.name.toLowerCase()===v.toLowerCase())||(src==='mob'&&x.mob===v)||(src==='vn'&&x.vn&&x.vn===v.toUpperCase().replace(/\s+/g,''))){p=x;break}}
+if(!p)return;
+if(src==='name'||!$('name').value.trim())$('name').value=p.name;
+if(!$('mob').value.trim())$('mob').value=p.mob;
+if(src==='vn'){$('ty').value='Motor';vis();if(p.vt)$('vt').value=p.vt;if(!$('vm').value.trim()&&p.vm)$('vm').value=p.vm;if(!$('co').value.trim()&&p.co)$('co').value=p.co}
+vnList()}
+/* Auto-calculations, renewals */
+function n2(x){return String(Math.round(x*100)/100)}
+function calcAm(){var a=parseFloat($('am').value);if(isNaN(a))return;$('pr').value=n2(a*1.18);calcPo()}
+function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value);if(isNaN(a)||isNaN(c))return;$('po').value=n2(a*c/100)}
+function calcEd(){var v=$('sd').value;if(!v)return;var d=new Date(v+'T00:00:00');$('ed').value=iso(new Date(d.getFullYear()+1,d.getMonth(),d.getDate()-1))}
+function renewedBy(p){var b=bdate(p),best=null;
+for(var i=0;i<data.length;i++){var q=data[i];if(q.id===p.id)continue;var qb=bdate(q);
+var explicit=q.renewOf===p.id;
+var same=(p.vn&&q.vn&&p.vn===q.vn)||(!p.vn&&!q.vn&&p.pno&&q.pno===p.pno&&q.mob===p.mob&&q.ty===p.ty);
+if(!explicit&&!(same&&qb>b))continue;
+if(!best||qb>bdate(best))best=q}
+return best}
+function renew(id){var p=data.find(function(x){return x.id===id});if(!p)return;openForm();renewFrom=id;$('mt').textContent='Renew Policy';
+['name','mob','co','ty','vt','vm','vn'].forEach(function(k){$(k).value=p[k]||(k==='ty'?'Motor':k==='vt'?'Two-wheeler':'')});
+if(p.ty!=='Motor')$('pno').value=p.pno||'';
+if(p.ed){var d=new Date(p.ed+'T00:00:00');d.setDate(d.getDate()+1);$('sd').value=iso(d);calcEd()}
+vis()}
+/* Monthly report */
+function setView(v){$('vPol').classList.toggle('hide',v!=='pol');$('vRep').classList.toggle('hide',v!=='rep');$('tPol').classList.toggle('on',v==='pol');$('tRep').classList.toggle('on',v==='rep');
+if(v==='rep'){if(!$('rf').value&&!$('rt').value)quick('this');else rep()}}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function bdate(p){if(p.sd)return p.sd;var t=parseInt(p.id,36);if(!isFinite(t)||t<1e11)return '';return iso(new Date(t))}
+function quick(k){var n=new Date(),y=n.getFullYear(),m=n.getMonth(),f,t;
+if(k==='this'){f=new Date(y,m,1);t=new Date(y,m+1,0)}
+else if(k==='last'){f=new Date(y,m-1,1);t=new Date(y,m,0)}
+else if(k==='3m'){f=new Date(y,m-2,1);t=new Date(y,m+1,0)}
+else if(k==='6m'){f=new Date(y,m-5,1);t=new Date(y,m+1,0)}
+else if(k==='year'){f=new Date(y,0,1);t=new Date(y,11,31)}
+else{$('rf').value='';$('rt').value='';rep();return}
+$('rf').value=iso(f);$('rt').value=iso(t);rep()}
+function pickMonth(k){var y=+k.slice(0,4),m=+k.slice(5,7);$('rf').value=k+'-01';$('rt').value=iso(new Date(y,m,0));rep()}
+function grp(L,key){var g={};L.forEach(function(p){var k=p[key]||'—';g[k]=(g[k]||0)+1});
+var ks=Object.keys(g).sort(function(a,b){return g[b]-g[a]});
+return ks.length?ks.map(function(k){return '<div class="gr"><span>'+esc(k)+'</span><b>'+g[k]+'</b></div>'}).join(''):'<small style="color:var(--mut)">No data</small>'}
+function rep(){var f=$('rf').value,t=$('rt').value;
+var L=data.filter(function(p){var d=bdate(p);if(!d)return false;if(f&&d<f)return false;if(t&&d>t)return false;return true}).sort(function(a,b){return bdate(a)<bdate(b)?1:-1});
+var prem=0,rec=0,po=0,M={};
+L.forEach(function(p){prem+=+p.pr||0;rec+=+p.pay||0;po+=+p.po||0;var k=bdate(p).slice(0,7),o=M[k]||(M[k]={n:0,pr:0});o.n++;o.pr+=+p.pr||0});
+$('rs').innerHTML=[['Policies booked',L.length],['Total premium',inr(prem)],['Payment received',inr(rec)],['Balance due',inr(Math.max(0,prem-rec))],['Payout',inr(po)]].map(function(s){return '<div class="st"><b>'+s[1]+'</b><span>'+s[0]+'</span></div>'}).join('');
+var keys;
+if(f&&t){keys=[];var a=new Date(+f.slice(0,4),+f.slice(5,7)-1,1),e=new Date(+t.slice(0,4),+t.slice(5,7)-1,1),c=0;
+while(a<=e&&c<60){keys.push(a.getFullYear()+'-'+String(a.getMonth()+1).padStart(2,'0'));a.setMonth(a.getMonth()+1);c++}keys.reverse()}
+else keys=Object.keys(M).sort().reverse();
+var mx=Math.max.apply(null,keys.map(function(k){return (M[k]||{n:0}).n}).concat([1]));
+$('rm').innerHTML=keys.length?keys.map(function(k){var o=M[k]||{n:0,pr:0};
+return '<div class="mr" onclick="pickMonth(\''+k+'\')"><div>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-IN',{month:'long',year:'numeric'})+'</div><div class="mb"><i style="width:'+Math.round(o.n/mx*100)+'%"></i></div><div><b>'+o.n+'</b> '+(o.n===1?'policy':'policies')+'</div><div class="mp">'+inr(o.pr)+'</div></div>'}).join(''):'<small style="color:var(--mut)">No policies in this period.</small>';
+$('rc').innerHTML=grp(L,'co');$('rtp').innerHTML=grp(L,'ty');
+$('rl').innerHTML=L.length?L.slice(0,200).map(function(p){return '<div class="lr"><span>'+fd(bdate(p))+'</span><span><b>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</b><small>'+esc(p.co)+' · '+esc(p.ty)+' · '+esc(p.pno)+'</small></span><span>'+inr(p.pr)+'</span></div>'}).join(''):'<small style="color:var(--mut)">No policies booked in this period.</small>'}
+
+/* render */
+var P={show:null,init:0};
+function dueAmt(p){return Math.max(0,(+p.pr||0)-(+p.pay||0))}
+function rng(k){var n=new Date(),y=n.getFullYear(),m=n.getMonth(),f,t;
+if(k==='this'){f=new Date(y,m,1);t=new Date(y,m+1,0)}
+else if(k==='last'){f=new Date(y,m-1,1);t=new Date(y,m,0)}
+else if(k==='3m'){f=new Date(y,m-2,1);t=new Date(y,m+1,0)}
+else if(k==='6m'){f=new Date(y,m-5,1);t=new Date(y,m+1,0)}
+else if(k==='year'){f=new Date(y,0,1);t=new Date(y,11,31)}
+else return ['',''];
+return [iso(f),iso(t)]}
+function pq(k){var r=rng(k);$('pf').value=r[0];$('pt').value=r[1];P.show=null;render()}
+function setP(){P.show=null;render()}
+function pshow(k){P.show=(P.show===k?null:k);render()}
+function card(p){var d=days(p.ed),rb=renewedBy(p),t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired '+(-d)+'d ago']:d<=30?['t-warn',d+' days left']:['t-ok','Active'],du=dueAmt(p);
+return '<div class="pc"><div class="row"><div><h3>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</h3><small>+91 '+esc(p.mob)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span></div>'+
+'<div class="kv"><div><span>Company</span>'+esc(p.co)+'</div><div><span>Type</span>'+esc(p.ty)+'</div><div><span>Policy no.</span>'+esc(p.pno)+'</div><div><span>Expiry</span>'+fd(p.ed)+'</div>'+
+'<div><span>Premium</span>'+inr(p.pr)+'</div><div><span>Received</span>'+inr(p.pay)+(du?' <small style="color:var(--bad)">(due '+inr(du)+')</small>':'')+'</div>'+
+(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+((p.vm||p.vn)?'<div style="grid-column:1/-1"><span>Vehicle</span>'+esc(p.vt)+(p.vm?' · '+esc(p.vm):'')+(p.vn?' · <b>'+esc(p.vn)+'</b>':'')+'</div>':'')+'</div>'+
+'<div class="acts">'+(rb?'':'<button class="btn sm wa" onclick="wa(\''+p.id+'\')">WhatsApp renewal</button>')+
+(du?'<button class="btn sm wa" style="background:#128c7e" onclick="waPay(\''+p.id+'\')">Payment reminder</button>':'')+
+'<button class="btn sm call" onclick="callp(\''+p.id+'\')">Call</button><button class="btn sm pdf" onclick="pdf(\''+p.id+'\')">Summary PDF</button>'+
+(p.pdfName?'<button class="btn sm ghost" onclick="viewCopy(\''+p.id+'\')">Policy copy</button>':'')+
+(!rb?'<button class="btn sm" onclick="renew(\''+p.id+'\')">Renew</button>':'')+'<button class="btn sm ghost" onclick="openForm(\''+p.id+'\')">Edit</button><button class="btn sm ghost" onclick="del(\''+p.id+'\')">Delete</button></div></div>'}
+function render(){if($('vRep')&&!$('vRep').classList.contains('hide'))setTimeout(rep,0);
+if(!P.init){P.init=1;var r0=rng('this');$('pf').value=r0[0];$('pt').value=r0[1]}
+var f=$('pf').value,t=$('pt').value,q=$('q').value.trim().toLowerCase(),qv=q.replace(/[\s-]/g,'');
+var inP=data.filter(function(p){var d=bdate(p);if(!d)return false;if(f&&d<f)return false;if(t&&d>t)return false;return true});
+var dueL=inP.filter(function(p){return dueAmt(p)>0});
+var soon=data.filter(function(p){var d=days(p.ed);return !renewedBy(p)&&d>=0&&d<=30}).sort(function(a,b){return days(a.ed)-days(b.ed)});
+var exp=data.filter(function(p){return !renewedBy(p)&&days(p.ed)<0}).sort(function(a,b){return days(b.ed)-days(a.ed)});
+var prem=inP.reduce(function(s,p){return s+(+p.pr||0)},0),rec=inP.reduce(function(s,p){return s+(+p.pay||0)},0),po=inP.reduce(function(s,p){return s+(+p.po||0)},0);
+var byDate=function(a,b){return bdate(a)<bdate(b)?1:-1};
+var ren=data.filter(function(p){return renewedBy(p)}).sort(byDate);
+var cards=[['booked',inP.length,'Policies booked'],['due',dueL.length,'Payment due'],['soon',soon.length,'Expiring in 30 days','all policies'],['exp',exp.length,'Expired','all policies'],['ren',ren.length,'Renewed','all policies']];
+var h=cards.map(function(c){return '<div class="st click'+(P.show===c[0]?' sel':'')+'" onclick="pshow(\''+c[0]+'\')"><b>'+c[1]+'</b><span>'+c[2]+'</span>'+(c[3]?'<small>'+c[3]+'</small>':'<small>tap to view</small>')+'</div>'}).join('');
+h+=[['Premium',inr(prem)],['Payment received',inr(rec)],['Balance due',inr(Math.max(0,prem-rec))],['Payout',inr(po)]].map(function(s){return '<div class="st"><b>'+s[1]+'</b><span>'+s[0]+'</span><small>selected period</small></div>'}).join('');
+$('stats').innerHTML=h;
+var L=null,title='';
+if(q){L=data.filter(function(p){return [p.name,p.mob,p.pno,p.co,p.ty,p.vm,p.vn].join(' ').toLowerCase().indexOf(q)>-1||(p.vn&&qv&&p.vn.toLowerCase().indexOf(qv)>-1)}).sort(function(a,b){return days(a.ed)-days(b.ed)});title='Search results for “'+esc($('q').value.trim())+'” (all policies)'}
+else if(P.show==='booked'){L=inP.slice().sort(byDate);title='Policies booked in the selected period'}
+else if(P.show==='due'){L=dueL.slice().sort(byDate);title='Policies with payment due (selected period)'}
+else if(P.show==='soon'){L=soon;title='Expiring in the next 30 days'}
+else if(P.show==='exp'){L=exp;title='Expired policies'}
+else if(P.show==='ren'){L=ren;title='Renewed policies'}
+if(L===null){$('lh').innerHTML='<div class="empty" style="padding:26px 10px">Tap a number above to see those policies, or search by name, mobile number or vehicle number.</div>';$('list').innerHTML='';return}
+$('lh').innerHTML='<div class="row" style="margin:6px 0 12px;align-items:center"><b>'+title+' · '+L.length+'</b>'+(q?'':'<button class="btn ghost sm" onclick="P.show=null;render()">Hide list</button>')+'</div>';
+$('list').innerHTML=L.length?L.map(card).join(''):'<div class="empty">No policies found.</div>'}
+if(!sb){$('demo').classList.remove('hide');$('demo').innerHTML='<b>Demo mode:</b> cloud is not configured, so accounts and data stay in this browser only.';cstat('Local only (demo mode)',1)}
+enter();
+</script>
+</body>
+</html>
