@@ -109,6 +109,17 @@ main{max-width:1100px;margin:0 auto;padding:18px 18px 110px}
 .btn.danger{background:var(--bad)}
 #im{position:fixed;inset:0;background:#0009;z-index:20;display:grid;place-items:end center}
 @media(min-width:700px){#im{place-items:center;padding:20px}}
+.menu{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:14px;box-shadow:0 12px 30px #0003;min-width:210px;padding:6px;z-index:15}
+.menu button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+.menu button:hover{background:var(--bg)}.mi{padding:8px 12px;font-size:12px;color:var(--mut)}
+.mbtn{position:relative}.dot{position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:var(--bad);display:block}
+.prow{display:flex;align-items:center;gap:10px;margin-bottom:12px}.prow label{margin:0;white-space:nowrap}.prow select{flex:1;max-width:260px}
+.btn.ghost.sel{border-color:var(--pri);color:var(--pri);background:#4f46e514}
+.rsum{color:var(--mut);font-size:14px;margin:0 0 12px}
+main .tabs{max-width:560px}
+.sh{font-size:12px;font-weight:700;color:var(--pri);text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+.more{border-top:1px dashed var(--bd);margin-top:12px;padding-top:4px}
+.pc .acts .btn{flex:0 0 auto}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -180,42 +191,34 @@ main{max-width:1100px;margin:0 auto;padding:18px 18px 110px}
 <section id="app" class="hide">
   <header>
     <div class="logo" onclick="goHome()" title="Go to home page"><i>✦</i>PolicyCare</div>
-    <div style="display:flex;gap:8px;align-items:center"><small id="cs" style="font-weight:600"></small><small id="who" style="color:var(--mut)"></small><button class="btn ghost sm" onclick="openImp()">Import Excel</button><button class="btn ghost sm" onclick="logout()">Logout</button></div>
+    <div style="position:relative">
+      <button class="btn ghost sm mbtn" onclick="tgm()">Menu ☰<i id="md" class="dot hide"></i></button>
+      <div id="mm" class="menu hide">
+        <div class="mi"><small id="who"></small><br><small id="cs" style="font-weight:600"></small></div>
+        <button onclick="tgm();openImp()">Import from Excel</button>
+        <button onclick="logout()">Log out</button>
+      </div>
+    </div>
   </header>
   <main>
-    <div class="tabs" style="max-width:360px"><button id="tPol" class="on" onclick="setView('pol')">Policies</button><button id="tRep" onclick="setView('rep')">Monthly report</button></div>
+    <div class="tabs"><button id="tPol" class="on" onclick="setView('pol')">Policies</button><button id="tRen" onclick="setView('ren')">Renewals</button><button id="tRep" onclick="setView('rep')">Report</button></div>
     <div id="vPol">
-    <div class="bar"><input id="q" placeholder="Search by name, mobile, policy no. or vehicle no." oninput="render()"></div>
-    <div class="rcard"><h3>Time period</h3><p class="hint">Choose a period to see how many policies were booked in it.</p>
-      <div class="bar" style="align-items:flex-end;margin-bottom:10px">
+      <input id="q" placeholder="Search name, mobile, policy or vehicle no." oninput="render()" style="margin-bottom:12px">
+      <div class="prow"><label>Showing</label><select id="psel" onchange="perChg('p')"><option value="this">This month</option><option value="last">Last month</option><option value="3m">Last 3 months</option><option value="6m">Last 6 months</option><option value="year">This year</option><option value="all">All time</option><option value="custom">Custom dates…</option></select></div>
+      <div id="pcd" class="bar hide" style="align-items:flex-end">
         <div style="flex:1;min-width:140px"><label>From date</label><input type="date" id="pf" onchange="setP()"></div>
         <div style="flex:1;min-width:140px"><label>To date</label><input type="date" id="pt" onchange="setP()"></div>
       </div>
-      <div class="qrow" style="margin:0">
-        <button class="btn ghost sm" onclick="pq('this')">This month</button>
-        <button class="btn ghost sm" onclick="pq('last')">Last month</button>
-        <button class="btn ghost sm" onclick="pq('3m')">Last 3 months</button>
-        <button class="btn ghost sm" onclick="pq('6m')">Last 6 months</button>
-        <button class="btn ghost sm" onclick="pq('year')">This year</button>
-        <button class="btn ghost sm" onclick="pq('all')">All time</button>
-      </div>
+      <div class="stats" id="stats"></div>
+      <div id="lh"></div>
+      <div class="list" id="list"></div>
     </div>
-    <div class="stats" id="stats"></div>
-    <div id="lh"></div>
-    <div class="list" id="list"></div>
-    </div>
+    <div id="vRen" class="hide"><div id="rnTop"></div><div class="list" id="rnList"></div></div>
     <div id="vRep" class="hide">
-      <div class="bar" style="align-items:flex-end">
-        <div style="flex:1;min-width:150px"><label>From date</label><input type="date" id="rf" onchange="rep()"></div>
-        <div style="flex:1;min-width:150px"><label>To date</label><input type="date" id="rt" onchange="rep()"></div>
-      </div>
-      <div class="qrow">
-        <button class="btn ghost sm" onclick="quick('this')">This month</button>
-        <button class="btn ghost sm" onclick="quick('last')">Last month</button>
-        <button class="btn ghost sm" onclick="quick('3m')">Last 3 months</button>
-        <button class="btn ghost sm" onclick="quick('6m')">Last 6 months</button>
-        <button class="btn ghost sm" onclick="quick('year')">This year</button>
-        <button class="btn ghost sm" onclick="quick('all')">All time</button>
+      <div class="prow"><label>Period</label><select id="rsel" onchange="perChg('r')"><option value="this">This month</option><option value="last">Last month</option><option value="3m">Last 3 months</option><option value="6m">Last 6 months</option><option value="year">This year</option><option value="all">All time</option><option value="custom">Custom dates…</option></select></div>
+      <div id="rcd" class="bar hide" style="align-items:flex-end">
+        <div style="flex:1;min-width:140px"><label>From date</label><input type="date" id="rf" onchange="rep()"></div>
+        <div style="flex:1;min-width:140px"><label>To date</label><input type="date" id="rt" onchange="rep()"></div>
       </div>
       <div class="stats" id="rs"></div>
       <div class="rcard"><h3>Month-wise policies booked</h3><p class="hint">Counted by policy start date (or the date you added it, if no start date). Tap a month to see only that month.</p><div id="rm"></div></div>
@@ -230,23 +233,28 @@ main{max-width:1100px;margin:0 auto;padding:18px 18px 110px}
   <div class="sheet">
     <h2 id="mt" style="margin:0 0 14px">New Policy</h2>
     <div class="grid">
-      <div class="full"><label>Customer name</label><input id="name" list="dlName" autocomplete="off" onchange="afill('name')"><datalist id="dlName"></datalist></div>
-      <div><label>Mobile number</label><input id="mob" type="tel" inputmode="numeric" maxlength="10" list="dlMob" autocomplete="off" onchange="afill('mob')"><datalist id="dlMob"></datalist></div>
-      <div><label>Policy number</label><input id="pno"></div>
-      <div><label>Insurance company</label><input id="co" list="cos" placeholder="e.g. LIC, HDFC Ergo"><datalist id="cos"><option>LIC</option><option>HDFC Ergo</option><option>ICICI Lombard</option><option>Bajaj Allianz</option><option>New India Assurance</option><option>Star Health</option><option>Tata AIG</option><option>SBI General</option></datalist></div>
-      <div><label>Insurance type</label><select id="ty" onchange="vis()"><option>Motor</option><option>Health</option><option>Life</option><option>Term</option><option>Travel</option><option>Fire / Property</option><option>Other</option></select></div>
+      <div class="full sh">Customer</div>
+      <div class="full"><label>Customer name *</label><input id="name" list="dlName" autocomplete="off" onchange="afill('name')"><datalist id="dlName"></datalist></div>
+      <div class="full"><label>Mobile number *</label><input id="mob" type="tel" inputmode="numeric" maxlength="10" list="dlMob" autocomplete="off" onchange="afill('mob')"><datalist id="dlMob"></datalist></div>
+      <div class="full sh">Policy</div>
+      <div><label>Policy number *</label><input id="pno"></div>
+      <div><label>Insurance company *</label><input id="co" list="cos" placeholder="e.g. LIC, HDFC Ergo"><datalist id="cos"></datalist></div>
+      <div class="full"><label>Insurance type</label><select id="ty" onchange="vis()"><option>Motor</option><option>Health</option><option>Life</option><option>Term</option><option>Travel</option><option>Fire / Property</option><option>Other</option></select></div>
+      <div><label>Policy start date</label><input id="sd" type="date" onchange="calcEd()"></div>
+      <div><label>Expiry / renewal date *</label><input id="ed" type="date"></div>
+      <div class="full sh vh">Vehicle</div>
+      <div class="vh"><label>Vehicle type</label><select id="vt"><option>Two-wheeler</option><option>Car</option><option>Commercial</option><option>Tractor</option><option>E-vehicle</option></select></div>
+      <div class="vh"><label>Vehicle number</label><input id="vn" placeholder="e.g. HR06AB1234" style="text-transform:uppercase" list="dlVn" autocomplete="off" onchange="afill('vn')"><datalist id="dlVn"></datalist></div>
+      <div class="full vh"><label>Vehicle model</label><input id="vm" placeholder="e.g. Swift VXi 2021" list="dlVm" autocomplete="off"><datalist id="dlVm"></datalist></div>
+      <div class="full sh">Amount</div>
       <div><label>Amount without GST (₹)</label><input id="am" type="number" inputmode="decimal" oninput="calcAm()"></div>
       <div><label>Premium incl. 18% GST (₹)</label><input id="pr" type="number" inputmode="decimal"></div>
+      <div class="full" style="margin-top:-4px"><span class="fl">Premium = amount + 18% GST (auto-filled, you can edit it). Payout is calculated on the amount without GST.</span></div>
+      <div class="full"><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
       <div><label>Payout (%)</label><input id="pc" type="number" inputmode="decimal" oninput="calcPo()" placeholder="e.g. 50"></div>
       <div><label>Payout amount (₹)</label><input id="po" type="number" inputmode="decimal"></div>
-      <div class="full" style="margin-top:-4px"><span class="fl">Premium = amount + 18% GST (auto-filled, you can edit it). Payout is calculated on the amount without GST.</span></div>
-      <div><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
-      <div><label>Policy start date</label><input id="sd" type="date" onchange="calcEd()"></div>
-      <div><label>Expiry / renewal date</label><input id="ed" type="date"></div>
-      <div class="vh"><label>Vehicle type</label><select id="vt"><option>Two-wheeler</option><option>Car</option><option>Commercial</option><option>Tractor</option><option>E-vehicle</option></select></div>
-      <div class="vh"><label>Vehicle model</label><input id="vm" placeholder="e.g. Swift VXi 2021" list="dlVm" autocomplete="off"><datalist id="dlVm"></datalist></div>
-      <div class="vh"><label>Vehicle number</label><input id="vn" placeholder="e.g. HR06AB1234" style="text-transform:uppercase" list="dlVn" autocomplete="off" onchange="afill('vn')"><datalist id="dlVn"></datalist></div>
-      <div class="full"><label>Policy copy (PDF, optional)</label><input id="file" type="file" accept="application/pdf,.pdf" onchange="pickFile(this)"><span class="fl" id="fn"></span></div>
+      <div class="full sh">Policy copy (optional)</div>
+      <div class="full"><input id="file" type="file" accept="application/pdf,.pdf" onchange="pickFile(this)"><span class="fl" id="fn"></span></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
       <button class="btn ghost" onclick="closeForm()">Cancel</button>
@@ -318,7 +326,7 @@ authed=true;$('home').classList.add('hide');$('login').classList.add('hide');$('
 if(sb){var r=await sb.from('pc_policies').select('id,data').order('updated_at',{ascending:false});
 if(r.error){cstat('⚠ Cloud load failed: '+r.error.message,1);toast('Could not load data: '+r.error.message)}else{data=r.data.map(function(x){var d=x.data;d.id=x.id;return d});render();cstat('☁ Synced · '+data.length+' in cloud')}}}
 function logout(){if(sb){sb.auth.signOut().then(function(){location.reload()})}else{ls('d',SK);location.reload()}}
-function cstat(t,bad){$('cs').textContent=t;$('cs').style.color=bad?'var(--bad)':'var(--ok)'}
+function cstat(t,bad){$('cs').textContent=t;$('cs').style.color=bad?'var(--bad)':'var(--ok)';$('md').classList.toggle('hide',!bad)}
 async function cloud(o){if(!sb)return;var d=Object.assign({},o);delete d.id;
 var r=await sb.from('pc_policies').upsert({id:o.id,user_id:uid,data:d,updated_at:new Date().toISOString()});if(r.error){cstat('⚠ Not saved to cloud: '+r.error.message,1);toast('Cloud save failed: '+r.error.message)}else cstat('☁ Saved to cloud')}
 async function cloudDel(p){if(!sb||!p)return;if(p.pdfPath)sb.storage.from('policy-pdfs').remove([p.pdfPath]);
@@ -508,19 +516,12 @@ if(p.ty!=='Motor')$('pno').value=p.pno||'';
 if(p.ed){var d=new Date(p.ed+'T00:00:00');d.setDate(d.getDate()+1);$('sd').value=iso(d);calcEd()}
 vis()}
 /* Monthly report */
-function setView(v){$('vPol').classList.toggle('hide',v!=='pol');$('vRep').classList.toggle('hide',v!=='rep');$('tPol').classList.toggle('on',v==='pol');$('tRep').classList.toggle('on',v==='rep');
-if(v==='rep'){if(!$('rf').value&&!$('rt').value)quick('this');else rep()}}
+function setView(v){['Pol','Ren','Rep'].forEach(function(n){var on=(v==='pol'&&n==='Pol')||(v==='ren'&&n==='Ren')||(v==='rep'&&n==='Rep');$('v'+n).classList.toggle('hide',!on);$('t'+n).classList.toggle('on',on)});
+if(v==='pol')render();if(v==='ren')renderRen();
+if(v==='rep'){if(!repInit){repInit=1;$('rsel').value='this';perDates('r','this')}rep()}window.scrollTo(0,0)}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function bdate(p){if(p.sd)return p.sd;var t=parseInt(p.id,36);if(!isFinite(t)||t<1e11)return '';return iso(new Date(t))}
-function quick(k){var n=new Date(),y=n.getFullYear(),m=n.getMonth(),f,t;
-if(k==='this'){f=new Date(y,m,1);t=new Date(y,m+1,0)}
-else if(k==='last'){f=new Date(y,m-1,1);t=new Date(y,m,0)}
-else if(k==='3m'){f=new Date(y,m-2,1);t=new Date(y,m+1,0)}
-else if(k==='6m'){f=new Date(y,m-5,1);t=new Date(y,m+1,0)}
-else if(k==='year'){f=new Date(y,0,1);t=new Date(y,11,31)}
-else{$('rf').value='';$('rt').value='';rep();return}
-$('rf').value=iso(f);$('rt').value=iso(t);rep()}
-function pickMonth(k){var y=+k.slice(0,4),m=+k.slice(5,7);$('rf').value=k+'-01';$('rt').value=iso(new Date(y,m,0));rep()}
+function pickMonth(k){var y=+k.slice(0,4),m=+k.slice(5,7);$('rsel').value='custom';$('rcd').classList.remove('hide');$('rf').value=k+'-01';$('rt').value=iso(new Date(y,m,0));rep()}
 function grp(L,key){var g={};L.forEach(function(p){var k=p[key]||'—';g[k]=(g[k]||0)+1});
 var ks=Object.keys(g).sort(function(a,b){return g[b]-g[a]});
 return ks.length?ks.map(function(k){return '<div class="gr"><span>'+esc(k)+'</span><b>'+g[k]+'</b></div>'}).join(''):'<small style="color:var(--mut)">No data</small>'}
@@ -540,7 +541,7 @@ $('rc').innerHTML=grp(L,'co');$('rtp').innerHTML=grp(L,'ty');
 $('rl').innerHTML=L.length?L.slice(0,200).map(function(p){return '<div class="lr"><span>'+fd(bdate(p))+'</span><span><b>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</b><small>'+esc(p.co)+' · '+esc(p.ty)+' · '+esc(p.pno)+'</small></span><span>'+inr(p.pr)+'</span></div>'}).join(''):'<small style="color:var(--mut)">No policies booked in this period.</small>'}
 
 /* render */
-var P={show:null,init:0};
+var P={show:null,init:0},R={seg:'next',f:'all'},repInit=0;
 function dueAmt(p){return Math.max(0,(+p.pr||0)-(+p.pay||0))}
 function rng(k){var n=new Date(),y=n.getFullYear(),m=n.getMonth(),f,t;
 if(k==='this'){f=new Date(y,m,1);t=new Date(y,m+1,0)}
@@ -550,43 +551,63 @@ else if(k==='6m'){f=new Date(y,m-5,1);t=new Date(y,m+1,0)}
 else if(k==='year'){f=new Date(y,0,1);t=new Date(y,11,31)}
 else return ['',''];
 return [iso(f),iso(t)]}
-function pq(k){var r=rng(k);$('pf').value=r[0];$('pt').value=r[1];P.show=null;render()}
+function perDates(pre,v){var r=rng(v);$(pre+'f').value=r[0];$(pre+'t').value=r[1]}
+function perChg(pre){var v=$(pre+'sel').value;$(pre+'cd').classList.toggle('hide',v!=='custom');if(v!=='custom')perDates(pre,v);if(pre==='p'){P.show=null;render()}else rep()}
 function setP(){P.show=null;render()}
 function pshow(k){P.show=(P.show===k?null:k);render()}
-function card(p){var d=days(p.ed),rb=renewedBy(p),t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired '+(-d)+'d ago']:d<=30?['t-warn',d+' days left']:['t-ok','Active'],du=dueAmt(p);
-return '<div class="pc"><div class="row"><div><h3>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</h3><small>+91 '+esc(p.mob)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span></div>'+
-'<div class="kv"><div><span>Company</span>'+esc(p.co)+'</div><div><span>Type</span>'+esc(p.ty)+'</div><div><span>Policy no.</span>'+esc(p.pno)+'</div><div><span>Expiry</span>'+fd(p.ed)+'</div>'+
-'<div><span>Premium</span>'+inr(p.pr)+'</div><div><span>Received</span>'+inr(p.pay)+(du?' <small style="color:var(--bad)">(due '+inr(du)+')</small>':'')+'</div>'+
-(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+((p.vm||p.vn)?'<div style="grid-column:1/-1"><span>Vehicle</span>'+esc(p.vt)+(p.vm?' · '+esc(p.vm):'')+(p.vn?' · <b>'+esc(p.vn)+'</b>':'')+'</div>':'')+'</div>'+
-'<div class="acts">'+(rb?'':'<button class="btn sm wa" onclick="wa(\''+p.id+'\')">WhatsApp renewal</button>')+
-(du?'<button class="btn sm wa" style="background:#128c7e" onclick="waPay(\''+p.id+'\')">Payment reminder</button>':'')+
-'<button class="btn sm call" onclick="callp(\''+p.id+'\')">Call</button><button class="btn sm pdf" onclick="pdf(\''+p.id+'\')">Summary PDF</button>'+
-(p.pdfName?'<button class="btn sm ghost" onclick="viewCopy(\''+p.id+'\')">Policy copy</button>':'')+
-(!rb?'<button class="btn sm" onclick="renew(\''+p.id+'\')">Renew</button>':'')+'<button class="btn sm ghost" onclick="openForm(\''+p.id+'\')">Edit</button><button class="btn sm ghost" onclick="del(\''+p.id+'\')">Delete</button></div></div>'}
-function render(){if($('vRep')&&!$('vRep').classList.contains('hide'))setTimeout(rep,0);
-if(!P.init){P.init=1;var r0=rng('this');$('pf').value=r0[0];$('pt').value=r0[1]}
+function tgm(){var m=$('mm');m.classList.toggle('hide',!m.classList.contains('hide'))}
+if(document.addEventListener)document.addEventListener('click',function(e){var m=$('mm');if(m&&!m.classList.contains('hide')&&!(e.target&&e.target.closest&&e.target.closest('#mm,.mbtn')))m.classList.add('hide')});
+function tgl(id){var e=$('mo-'+id),b=$('mb-'+id),h=e.classList.contains('hide');e.classList.toggle('hide',!h);b.textContent=h?'Less ▴':'More ▾'}
+function waHi(id){var p=data.find(function(x){return x.id===id});if(!p)return;
+var m='Hello '+p.name+',\nHope you are doing well. This is regarding your '+p.co+' '+p.ty+' policy ('+p.pno+(p.vn?', '+p.vn:'')+'). Please get in touch if you need any help. Thank you!';
+window.open('https://wa.me/91'+p.mob+'?text='+encodeURIComponent(m),'_blank')}
+function card(p){var d=days(p.ed),rb=renewedBy(p),du=dueAmt(p),need=!rb&&d<=30,id=p.id;
+var t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired '+(-d)+'d ago']:d===0?['t-warn','Expires today']:d<=30?['t-warn',d+' days left']:['t-ok','Active'];
+var mode=need?'ren':du?'pay':'hi',wl=mode==='ren'?'WhatsApp renewal':mode==='pay'?'WhatsApp payment':'WhatsApp',wf=mode==='ren'?'wa':mode==='pay'?'waPay':'waHi';
+var q=function(f,l,c){return '<button class="btn sm '+(c||'ghost')+'" onclick="'+f+'(\''+id+'\')">'+l+'</button>'};
+var info='<div class="kv" style="margin:10px 0"><div><span>Type</span>'+esc(p.ty)+'</div><div><span>Received</span>'+inr(p.pay)+'</div><div><span>Start date</span>'+fd(p.sd)+'</div>'+
+(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+
+((p.vm||p.vt)?'<div style="grid-column:1/-1"><span>Vehicle</span>'+esc(p.vt)+(p.vm?' · '+esc(p.vm):'')+'</div>':'')+'</div>';
+var extra='<div class="acts">'+(du&&mode!=='pay'?q('waPay','Payment reminder'):'')+(!rb&&mode!=='ren'?q('wa','Renewal message'):'')+(!rb&&!need?q('renew','Renew'):'')+
+q('pdf','Summary PDF')+(p.pdfName?q('viewCopy','Policy copy'):'')+q('openForm','Edit')+q('del','Delete')+'</div>';
+return '<div class="pc"><div class="row"><div><h3>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</h3><small>+91 '+esc(p.mob)+' · '+esc(p.co)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span></div>'+
+'<div class="kv" style="grid-template-columns:1fr 1fr 1.2fr"><div><span>Policy no.</span>'+esc(p.pno)+'</div><div><span>Expiry</span>'+fd(p.ed)+'</div><div><span>Premium</span>'+inr(p.pr)+(du?' <small style="color:var(--bad)">(due '+inr(du)+')</small>':'')+'</div></div>'+
+'<div class="acts">'+q(wf,wl,'wa')+q('callp','Call','call')+(need?q('renew','Renew',''):'')+'<button class="btn sm ghost" id="mb-'+id+'" onclick="tgl(\''+id+'\')">More ▾</button></div>'+
+'<div class="more hide" id="mo-'+id+'">'+info+extra+'</div></div>'}
+function render(){if($('vRep')&&!$('vRep').classList.contains('hide'))setTimeout(rep,0);if($('vRen')&&!$('vRen').classList.contains('hide'))setTimeout(renderRen,0);
+if(!P.init){P.init=1;$('psel').value='this';perDates('p','this')}
 var f=$('pf').value,t=$('pt').value,q=$('q').value.trim().toLowerCase(),qv=q.replace(/[\s-]/g,'');
 var inP=data.filter(function(p){var d=bdate(p);if(!d)return false;if(f&&d<f)return false;if(t&&d>t)return false;return true});
 var dueL=inP.filter(function(p){return dueAmt(p)>0});
-var soon=data.filter(function(p){var d=days(p.ed);return !renewedBy(p)&&d>=0&&d<=30}).sort(function(a,b){return days(a.ed)-days(b.ed)});
-var exp=data.filter(function(p){return !renewedBy(p)&&days(p.ed)<0}).sort(function(a,b){return days(b.ed)-days(a.ed)});
-var prem=inP.reduce(function(s,p){return s+(+p.pr||0)},0),rec=inP.reduce(function(s,p){return s+(+p.pay||0)},0),po=inP.reduce(function(s,p){return s+(+p.po||0)},0);
+var soon=data.filter(function(p){var d=days(p.ed);return !renewedBy(p)&&d>=0&&d<=30});
+var prem=inP.reduce(function(s,p){return s+(+p.pr||0)},0);
 var byDate=function(a,b){return bdate(a)<bdate(b)?1:-1};
-var ren=data.filter(function(p){return renewedBy(p)}).sort(byDate);
-var cards=[['booked',inP.length,'Policies booked'],['due',dueL.length,'Payment due'],['soon',soon.length,'Expiring in 30 days','all policies'],['exp',exp.length,'Expired','all policies'],['ren',ren.length,'Renewed','all policies']];
-var h=cards.map(function(c){return '<div class="st click'+(P.show===c[0]?' sel':'')+'" onclick="pshow(\''+c[0]+'\')"><b>'+c[1]+'</b><span>'+c[2]+'</span>'+(c[3]?'<small>'+c[3]+'</small>':'<small>tap to view</small>')+'</div>'}).join('');
-h+=[['Premium',inr(prem)],['Payment received',inr(rec)],['Balance due',inr(Math.max(0,prem-rec))],['Payout',inr(po)]].map(function(s){return '<div class="st"><b>'+s[1]+'</b><span>'+s[0]+'</span><small>selected period</small></div>'}).join('');
+var h='<div class="st click'+(P.show==='booked'?' sel':'')+'" onclick="pshow(\'booked\')"><b>'+inP.length+'</b><span>Policies booked</span><small>tap to view</small></div>'+
+'<div class="st click'+(P.show==='due'?' sel':'')+'" onclick="pshow(\'due\')"><b>'+dueL.length+'</b><span>Payment due</span><small>tap to view</small></div>'+
+'<div class="st click" onclick="setView(\'ren\')"><b>'+soon.length+'</b><span>To renew in 30 days</span><small>tap to view</small></div>'+
+'<div class="st"><b>'+inr(prem)+'</b><span>Premium</span><small>selected period</small></div>';
 $('stats').innerHTML=h;
 var L=null,title='';
-if(q){L=data.filter(function(p){return [p.name,p.mob,p.pno,p.co,p.ty,p.vm,p.vn].join(' ').toLowerCase().indexOf(q)>-1||(p.vn&&qv&&p.vn.toLowerCase().indexOf(qv)>-1)}).sort(function(a,b){return days(a.ed)-days(b.ed)});title='Search results for “'+esc($('q').value.trim())+'” (all policies)'}
-else if(P.show==='booked'){L=inP.slice().sort(byDate);title='Policies booked in the selected period'}
-else if(P.show==='due'){L=dueL.slice().sort(byDate);title='Policies with payment due (selected period)'}
-else if(P.show==='soon'){L=soon;title='Expiring in the next 30 days'}
-else if(P.show==='exp'){L=exp;title='Expired policies'}
-else if(P.show==='ren'){L=ren;title='Renewed policies'}
+if(q){L=data.filter(function(p){return [p.name,p.mob,p.pno,p.co,p.ty,p.vm,p.vn].join(' ').toLowerCase().indexOf(q)>-1||(p.vn&&qv&&p.vn.toLowerCase().indexOf(qv)>-1)}).sort(function(a,b){return days(a.ed)-days(b.ed)});title='Search results for “'+esc($('q').value.trim())+'”'}
+else if(P.show==='booked'){L=inP.slice().sort(byDate);title='Policies booked in this period'}
+else if(P.show==='due'){L=dueL.slice().sort(byDate);title='Policies with payment due'}
 if(L===null){$('lh').innerHTML='<div class="empty" style="padding:26px 10px">Tap a number above to see those policies, or search by name, mobile number or vehicle number.</div>';$('list').innerHTML='';return}
 $('lh').innerHTML='<div class="row" style="margin:6px 0 12px;align-items:center"><b>'+title+' · '+L.length+'</b>'+(q?'':'<button class="btn ghost sm" onclick="P.show=null;render()">Hide list</button>')+'</div>';
 $('list').innerHTML=L.length?L.map(card).join(''):'<div class="empty">No policies found.</div>'}
+function rseg(s){R.seg=s;R.f='all';renderRen()}
+function rflt(f){R.f=f;renderRen()}
+function renderRen(){var next=[],last=[],over=[];
+data.forEach(function(p){var d=days(p.ed);if(d>=0&&d<=30)next.push(p);else if(d<0&&d>=-30)last.push(p);else if(d<-30&&!renewedBy(p))over.push(p)});
+next.sort(function(a,b){return days(a.ed)-days(b.ed)});last.sort(function(a,b){return days(b.ed)-days(a.ed)});over.sort(function(a,b){return days(b.ed)-days(a.ed)});
+var cur=R.seg==='next'?next:R.seg==='last'?last:over;
+var pend=cur.filter(function(p){return !renewedBy(p)}),done=cur.filter(function(p){return !!renewedBy(p)});
+var seg=[['next','Next 30 days',next.length],['last','Last 30 days',last.length],['over','Overdue',over.length]];
+var h='<div class="tabs">'+seg.map(function(s){return '<button class="'+(R.seg===s[0]?'on':'')+'" onclick="rseg(\''+s[0]+'\')">'+s[1]+' ('+s[2]+')</button>'}).join('')+'</div>';
+h+='<p class="rsum">'+(R.seg==='next'?'<b>'+cur.length+'</b> policies expire in the next 30 days · '+pend.length+' not renewed yet · '+done.length+' already renewed':R.seg==='last'?'<b>'+cur.length+'</b> policies expired in the last 30 days · '+done.length+' renewed · '+pend.length+' not renewed':'<b>'+cur.length+'</b> older policies expired and were not renewed')+'</p>';
+if(R.seg!=='over'){h+='<div class="qrow">'+[['all','All',cur.length],['pend','Not renewed',pend.length],['done','Renewed',done.length]].map(function(c){return '<button class="btn ghost sm'+(R.f===c[0]?' sel':'')+'" onclick="rflt(\''+c[0]+'\')">'+c[1]+' ('+c[2]+')</button>'}).join('')+'</div>'}
+var L=R.seg==='over'?cur:R.f==='pend'?pend:R.f==='done'?done:(R.seg==='next'?pend.concat(done):cur);
+$('rnTop').innerHTML=h;
+$('rnList').innerHTML=L.length?L.map(card).join(''):'<div class="empty">'+(R.seg==='next'?'No policies expiring in the next 30 days.':R.seg==='last'?'No policies expired in the last 30 days.':'No overdue policies.')+'</div>'}
 if(!sb){$('demo').classList.remove('hide');$('demo').innerHTML='<b>Demo mode:</b> cloud is not configured, so accounts and data stay in this browser only.';cstat('Local only (demo mode)',1)}
 enter();
 </script>
