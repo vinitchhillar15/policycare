@@ -116,10 +116,191 @@ main{max-width:1100px;margin:0 auto;padding:18px 18px 110px}
 .prow{display:flex;align-items:center;gap:10px;margin-bottom:12px}.prow label{margin:0;white-space:nowrap}.prow select{flex:1;max-width:260px}
 .btn.ghost.sel{border-color:var(--pri);color:var(--pri);background:#4f46e514}
 .rsum{color:var(--mut);font-size:14px;margin:0 0 12px}
-main .tabs{max-width:560px}
+main .tabs{max-width:640px}main .tabs button{padding:9px 4px;font-size:13px}
+#lm,#cp,#dm{position:fixed;inset:0;background:#0009;display:grid;place-items:end center}
+#lm{z-index:20}#cp{z-index:21}#dm{z-index:22}
+@media(min-width:700px){#lm,#cp,#dm{place-items:center;padding:20px}}
+.mini{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--bd)}.mini:last-child{border:0}
+.mini .mi-main{flex:1 1 170px;min-width:0;cursor:pointer}.mini .mi-main b{display:block;font-size:14px}.mini .mi-main small{color:var(--mut)}
+.sec2 .sh2{display:flex;justify-content:space-between;align-items:center;margin:0 0 4px}.sec2 h3{margin:0;font-size:16px}
+.lnk{cursor:pointer}.lnk:hover{color:var(--pri)}
+.t-new{background:#4f46e522;color:var(--pri)}
+.mc{display:grid;grid-template-columns:120px 1fr 90px;gap:10px;align-items:center;padding:8px 6px;font-size:14px}.mc>div:last-child{text-align:right;font-weight:600}
+@media(max-width:520px){.mc{grid-template-columns:88px 1fr 80px}}
 .sh{font-size:12px;font-weight:700;color:var(--pri);text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
 .more{border-top:1px dashed var(--bd);margin-top:12px;padding-top:4px}
 .pc .acts .btn{flex:0 0 auto}
+.navlinks{display:flex;gap:22px}.navlinks a{cursor:pointer;color:var(--mut);font-weight:600;font-size:14px}.navlinks a:hover{color:var(--tx)}
+@media(max-width:760px){.navlinks{display:none}}
+.badge{display:inline-block;font-size:12px;font-weight:700;color:var(--pri);background:#4f46e51a;padding:6px 12px;border-radius:99px;margin-bottom:14px}
+.mockbox{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:16px;box-shadow:0 24px 60px #4f46e52e}
+.mrow3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}.mrow3 .st{padding:10px}.mrow3 .st b{font-size:20px}
+.ins{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.ins span{padding:8px 14px;border:1px solid var(--bd);border-radius:99px;background:var(--card);font-weight:600;font-size:13px;color:var(--mut)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.vs{grid-template-columns:1fr}}
+.vs .old{border:1px solid var(--bd);background:var(--card);border-radius:20px;padding:22px}.vs .new{border-radius:20px;padding:22px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+.vs h3{margin:0 0 12px}.vs ul{margin:0;padding-left:18px}.vs li{margin-bottom:8px;font-size:15px}.vs .old li{color:var(--mut)}
+details.faq{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+details.faq summary{cursor:pointer;font-weight:700}details.faq p{margin:10px 0 0;color:var(--mut)}
+.sec[id]{scroll-margin-top:70px}
+.pc .hint{color:var(--mut);font-size:13px}
+@media(min-width:900px){#home .feats{grid-template-columns:repeat(3,1fr)}}
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.secure{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:22px;text-align:center;max-width:720px;margin:0 auto}
+.secure h3{margin:0 0 8px}.secure p{margin:0;color:var(--mut)}
+
+/* ===== Desktop app shell: sidebar + wide content ===== */
+.ni{display:none}
+#hadd{display:none}
+.wgrid{display:grid;grid-template-columns:1fr;gap:16px}
+.wgrid .rcard{margin:0}
+.tw{background:var(--card);border:1px solid var(--bd);border-radius:16px;overflow:auto}
+.dt{width:100%;border-collapse:collapse;font-size:14px}
+.dt th{text-align:left;font-size:12px;color:var(--mut);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--bg);white-space:nowrap}
+.dt td{padding:12px 14px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.dt tr:last-child td{border-bottom:0}
+.dt tr:hover td{background:#4f46e508}
+.dt .r{text-align:right;white-space:nowrap}
+.list.plain{display:block}
+@media(min-width:900px){
+  #hadd{display:inline-flex;margin-left:auto;margin-right:10px}
+  #fab{display:none!important}
+  .ni{display:inline-block;width:20px;text-align:center}
+  main{max-width:none;display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;padding:24px 28px 40px;align-items:start}
+  main>.tabs{grid-column:1;grid-row:1;flex-direction:column;position:sticky;top:76px;max-width:none;margin:0;padding:10px;border-radius:16px;background:var(--card);border:1px solid var(--bd);gap:4px}
+  main>.tabs button{display:flex;align-items:center;gap:10px;text-align:left;padding:11px 12px;font-size:14px;border-radius:10px;color:var(--tx);background:transparent}
+  main>.tabs button:hover{background:var(--bg)}
+  main>.tabs button.on{background:#4f46e51a;color:var(--pri)}
+  main>div:not(.tabs){grid-column:2;grid-row:1;min-width:0}
+  main .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  main .stats .st{border-top:3px solid var(--pri)}
+  main .stats .st:nth-child(2){border-top-color:var(--warn)}
+  main .stats .st:nth-child(3){border-top-color:var(--ok)}
+  main .stats .st:nth-child(4){border-top-color:#7c3aed}
+  .wgrid{grid-template-columns:1fr 1fr}
+  .wgrid>.rcard:nth-child(3){grid-column:1/-1}
+  main #q,main #lq{max-width:560px}
+}
+
+/* ===== Zoho-style colour theme (own palette, not Zoho's) ===== */
+:root{--pri:#2563eb;--pri2:#1d4ed8;--side:#0f2747}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#60a5fa;--pri2:#2563eb}}
+header{background:var(--side);border-bottom:0}
+header .logo{color:#fff}
+header .btn.ghost{color:#fff;border-color:#33507a;background:transparent}
+header #hadd{background:#2563eb;color:#fff}
+header .menu{color:var(--tx)}
+header .menu button{color:var(--tx)}
+@media(min-width:900px){
+  body{background:#eef2f7}
+  main>.tabs{background:var(--side);border-color:var(--side)}
+  main>.tabs button{color:#cbd5e1}
+  main>.tabs button:hover{background:#1b3a63;color:#fff}
+  main>.tabs button.on{background:#2563eb;color:#fff}
+  main .stats .st{box-shadow:0 1px 2px #0f172a0d}
+  .dt th{background:#f8fafc}
+}
+
+/* ===== Modern professional theme ===== */
+:root{--pri:#0f766e;--pri2:#0d9488;--side:#111827;--bg:#f5f6f8;--card:#ffffff;--tx:#111827;--mut:#6b7280;--bd:#e5e7eb}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#2dd4bf;--pri2:#14b8a6;--side:#0b1220;--bg:#0f1420;--card:#171e2e;--tx:#f3f4f6;--mut:#9ca3af;--bd:#262f3f}}
+body{background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.02em}
+.btn{background:var(--pri);box-shadow:0 1px 2px rgba(16,24,40,.12)}
+.btn:hover{background:var(--pri2)}
+.btn.ghost{background:var(--card);border-color:var(--bd);color:var(--tx)}
+input,select{border-color:#d1d5db;border-radius:10px}
+input:focus,select:focus{outline:2px solid var(--pri);outline-offset:0;border-color:transparent}
+.logo i{background:var(--pri);box-shadow:none}
+header{background:var(--side);border-bottom:0;box-shadow:0 1px 0 rgba(255,255,255,.04)}
+header .logo{color:#fff;font-weight:700}
+header .btn.ghost{color:#e5e7eb;border-color:#374151;background:transparent}
+header #hadd{background:var(--pri);color:#fff}
+header #hadd:hover{background:var(--pri2)}
+.tabs{background:#eceef2;border-radius:12px}
+.tabs button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 3px rgba(16,24,40,.1)}
+.rcard,.pc,.st,.tw,.ft,.sp,.old,.mini{border-color:var(--bd);box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.pc{border-radius:16px;padding:18px}
+.st{border-radius:14px;padding:16px}
+.st b{font-size:26px;letter-spacing:-.02em}
+.st span{text-transform:none;font-weight:500}
+.tag{letter-spacing:.01em}
+.t-ok{background:#dcfce7;color:#15803d}.t-warn{background:#fef3c7;color:#b45309}.t-bad{background:#fee2e2;color:#b91c1c}
+.dt th{text-transform:uppercase;font-size:11px;letter-spacing:.06em;color:#6b7280;background:#f9fafb}
+.dt td{color:var(--tx)}
+.dt tr:hover td{background:#f9fafb}
+.menu{border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,.18)}
+.sheet{border-radius:20px}
+.btn.wa{background:#16a34a}.btn.wa:hover{background:#15803d}.btn.call{background:#334155}.btn.call:hover{background:#1e293b}.btn.pdf{background:#7c3aed}.btn.pdf:hover{background:#6d28d9}
+.hbg{background:radial-gradient(circle at 12% 0%,#0f766e26,transparent 55%),radial-gradient(circle at 95% 60%,#0d948822,transparent 50%)}
+@media(min-width:900px){
+  body{background:#f1f3f6}
+  main>.tabs{background:var(--side);border:0;border-radius:14px;padding:12px}
+  main>.tabs button{color:#9ca3af;font-weight:500;border-radius:9px;padding:10px 12px}
+  main>.tabs button:hover{background:#1f2937;color:#fff}
+  main>.tabs button.on{background:var(--pri);color:#fff;box-shadow:none}
+  main .stats .st{border-top:0;border-left:3px solid var(--pri);padding:16px 18px}
+  main .stats .st:nth-child(2){border-left-color:#f59e0b}
+  main .stats .st:nth-child(3){border-left-color:#10b981}
+  main .stats .st:nth-child(4){border-left-color:#6366f1}
+  main .stats .st:nth-child(n+5){border-left-color:var(--pri)}
+  main>div:not(.tabs) .rcard{padding:20px}
+  .wgrid .rcard{padding:20px}
+  .sec2 h3{font-size:15px}
+}
+
+.pgrid{display:grid;grid-template-columns:1fr;gap:18px}
+.pprev canvas{width:100%;height:auto;border-radius:16px;box-shadow:0 10px 30px rgba(16,24,40,.18);display:block}
+@media(min-width:900px){.pgrid{grid-template-columns:420px minmax(0,1fr)}}
+
+/* ===== Light professional theme (own palette) ===== */
+:root{--pri:#2563eb;--pri2:#1d4ed8;--side:#ffffff;--bg:#f4f6fa;--card:#ffffff;--tx:#1e293b;--mut:#64748b;--bd:#e2e8f0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#60a5fa;--pri2:#3b82f6;--side:#111827;--bg:#0f1420;--card:#171e2e;--tx:#f1f5f9;--mut:#94a3b8;--bd:#263045}}
+header{background:#ffffff;border-bottom:1px solid var(--bd);box-shadow:0 1px 3px rgba(15,23,42,.06)}
+header .logo{color:var(--tx)}
+header .btn.ghost{color:var(--tx);border-color:var(--bd);background:var(--card)}
+header #hadd{background:var(--pri);color:#fff}
+@media(prefers-color-scheme:dark){header{background:#111827;border-bottom-color:#263045}}
+.btn{background:var(--pri)}
+.btn:hover{background:var(--pri2)}
+.btn.wa{background:#16a34a}.btn.call{background:#475569}.btn.pdf{background:#7c3aed}
+.tabs{background:#eef2f7}
+@media(min-width:900px){
+  main>.tabs{background:#ffffff;border:1px solid var(--bd);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+  main>.tabs button{color:#475569}
+  main>.tabs button:hover{background:#f1f5f9;color:var(--tx)}
+  main>.tabs button.on{background:#eaf1ff;color:var(--pri)}
+  .dt th{background:#f8fafc;color:#64748b}
+}
+
+/* ===== Midnight Violet dark theme (default) ===== */
+:root,:root:not([data-theme="light"]){--pri:#8b5cf6;--pri2:#6d28d9;--side:#0b1020;--bg:#0b1020;--card:#141b2d;--tx:#e6ebf5;--mut:#8b96ad;--bd:#222d46;color-scheme:dark}
+:root[data-theme="light"]{--pri:#7c3aed;--pri2:#6d28d9;--side:#ffffff;--bg:#f5f6fb;--card:#ffffff;--tx:#1e1b4b;--mut:#6b7280;--bd:#e4e7f0;color-scheme:light}
+:root:not([data-theme="light"]) body{background:var(--bg)!important}
+:root:not([data-theme="light"]) header{background:#0b1020;border-bottom:1px solid #222d46;box-shadow:none}
+:root:not([data-theme="light"]) header .btn.ghost{color:var(--tx);border-color:#2a3754;background:#141b2d}
+:root:not([data-theme="light"]) .tabs{background:#0f1628}
+:root:not([data-theme="light"]) .tabs button.on{background:#1e1635;color:#c4b5fd;box-shadow:none}
+:root:not([data-theme="light"]) .dt th{background:#101828;color:#8b96ad}
+:root:not([data-theme="light"]) .dt tr:hover td{background:#18213a}
+:root:not([data-theme="light"]) .t-ok{background:rgba(34,197,94,.14);color:#4ade80}
+:root:not([data-theme="light"]) .t-warn{background:rgba(245,158,11,.14);color:#fbbf24}
+:root:not([data-theme="light"]) .t-bad{background:rgba(244,63,94,.14);color:#fb7185}
+:root:not([data-theme="light"]) .t-new{background:rgba(139,92,246,.18);color:#c4b5fd}
+:root:not([data-theme="light"]) .btn.wa{background:#16a34a}
+:root:not([data-theme="light"]) .btn.call{background:#334155}
+:root:not([data-theme="light"]) .btn.pdf{background:#7c3aed}
+:root:not([data-theme="light"]) .btn.ghost{background:#141b2d;border-color:#2a3754}
+:root:not([data-theme="light"]) input,:root:not([data-theme="light"]) select{background:#0f1628;border-color:#2a3754;color:var(--tx)}
+:root:not([data-theme="light"]) .menu{background:#141b2d;border-color:#2a3754}
+@media(min-width:900px){
+ :root:not([data-theme="light"]) main>.tabs{background:#0b1020;border-color:#222d46}
+ :root:not([data-theme="light"]) main>.tabs button{color:#8b96ad}
+ :root:not([data-theme="light"]) main>.tabs button:hover{background:#18213a;color:var(--tx)}
+ :root:not([data-theme="light"]) main>.tabs button.on{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff}
+ :root:not([data-theme="light"]) main .stats .st:nth-child(2){border-left-color:#f59e0b}
+ :root:not([data-theme="light"]) main .stats .st:nth-child(3){border-left-color:#22c55e}
+ :root:not([data-theme="light"]) main .stats .st:nth-child(4){border-left-color:#38bdf8}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -129,47 +310,84 @@ main .tabs{max-width:560px}
 <section id="home">
   <nav class="nav">
     <div class="logo" onclick="window.scrollTo(0,0)"><i>✦</i>PolicyCare</div>
+    <div class="navlinks"><a onclick="sc('f-feat')">Features</a><a onclick="sc('f-how')">How it works</a><a onclick="sc('f-faq')">FAQ</a></div>
     <div id="hn" style="display:flex;gap:8px"><button class="btn ghost sm" onclick="showLogin('in')">Log in</button><button class="btn sm" onclick="showLogin('up')">Get started</button></div>
   </nav>
   <div class="hbg"><div class="wrap hero">
     <div>
-      <h1>Every policy. Every renewal. <span class="grad">One simple place.</span></h1>
-      <p>PolicyCare is a free CRM for insurance agents. Save customer policies from every company, track renewals and message clients on WhatsApp in one tap.</p>
+      <span class="badge">Free CRM for Indian insurance agents</span>
+      <h1>Never miss a renewal. <span class="grad">Keep every client in one place.</span></h1>
+      <p>PolicyCare helps you track policies from every company, follow up on renewals and pending payments, manage leads and KYC documents, and message clients on WhatsApp. On phone or laptop, completely free.</p>
       <div class="cta"><button class="btn lg" onclick="showLogin('up')">Create free account</button><button class="btn ghost lg" onclick="showLogin('in')">Log in</button></div>
-      <div class="chips"><span class="chip">100% free to use</span><span class="chip">Works on phone &amp; laptop</span><span class="chip">Your data stays private</span></div>
+      <div class="chips"><span class="chip">No credit card</span><span class="chip">Ready in a minute</span><span class="chip">Works on phone &amp; laptop</span></div>
     </div>
-    <div class="mock">
-      <div class="pc"><div class="row"><div><h3>Rajesh Sharma</h3><small>+91 98XXXXXX10</small></div><span class="tag t-warn">12 days left</span></div>
-        <div class="kv"><div><span>Company</span>HDFC Ergo</div><div><span>Type</span>Motor</div><div><span>Premium</span>₹14,250</div><div><span>Expiry</span>01 Dec 2026</div></div>
-        <div class="acts"><span class="btn sm wa">WhatsApp</span><span class="btn sm call">Call</span><span class="btn sm ghost">Policy copy</span></div></div>
-      <div class="pc"><div class="row"><div><h3>Sunita Verma</h3><small>+91 97XXXXXX45</small></div><span class="tag t-ok">Active</span></div>
-        <div class="kv"><div><span>Company</span>Star Health</div><div><span>Type</span>Health</div><div><span>Premium</span>₹22,800</div><div><span>Expiry</span>14 Aug 2027</div></div></div>
-      <span class="cap">Sample data for preview</span>
+    <div>
+      <div class="mockbox">
+        <div class="mrow3"><div class="st"><b>14</b><span>Renew this week</span></div><div class="st"><b>6</b><span>Payment pending</span></div><div class="st"><b>5</b><span>Lead follow-ups</span></div></div>
+        <div class="mini"><div class="mi-main"><b>Rajesh Sharma · HR06AB1234</b><small>HDFC Ergo · Motor · 26 Nov</small></div><span class="tag t-warn">5d left</span><span class="btn sm wa">WhatsApp</span></div>
+        <div class="mini"><div class="mi-main"><b>Sunita Verma</b><small>Star Health · Health · 03 Dec</small></div><span class="tag t-warn">12d left</span><span class="btn sm wa">WhatsApp</span></div>
+        <div class="mini"><div class="mi-main"><b>Amit Kumar</b><small>LIC · Life · premium pending</small></div><span class="tag t-bad">Due ₹9,250</span><span class="btn sm wa">WhatsApp</span></div>
+        <span class="cap">Sample data for preview</span>
+      </div>
     </div>
   </div></div>
+  <div class="wrap" style="padding:28px 20px 10px"><p class="sub" style="text-align:center;color:var(--mut);margin:0 0 14px">Works with every insurer you sell. Add any company you work with.</p>
+    <div class="ins"><span>LIC</span><span>HDFC Ergo</span><span>ICICI Lombard</span><span>Star Health</span><span>Bajaj Allianz</span><span>Tata AIG</span><span>New India Assurance</span><span>SBI General</span><span>Care Health</span><span>Niva Bupa</span></div></div>
   <div class="wrap sec">
-    <h2>Everything an agent needs</h2>
-    <p class="sub">Stop searching through WhatsApp chats and paper files. Keep every customer policy ready in seconds.</p>
-    <div class="feats">
-      <div class="ft"><i>🗂️</i><h3>All policies in one place</h3><p>Motor, health, life and more, from every insurance company you work with.</p></div>
-      <div class="ft"><i>⏰</i><h3>Renewals at a glance</h3><p>See which policies expire in the next 30 days, and which have already expired.</p></div>
-      <div class="ft"><i>💬</i><h3>WhatsApp &amp; call in one tap</h3><p>Send a ready renewal message or call the customer straight from the policy card.</p></div>
-      <div class="ft"><i>📎</i><h3>Policy copy storage</h3><p>Upload the policy PDF with each record and open it any time, on any device.</p></div>
-      <div class="ft"><i>💰</i><h3>Payment tracking</h3><p>Record premium and payment received, and see the balance due for every customer.</p></div>
-      <div class="ft"><i>📱</i><h3>Laptop and mobile</h3><p>Log in with your mobile number and password. Your data syncs across devices.</p></div>
+    <h2>From scattered diaries to one dashboard</h2>
+    <p class="sub">Renewals slip when everything lives in memory, notebooks and chat history.</p>
+    <div class="vs">
+      <div class="old"><h3>The old way</h3><ul><li>Premium dates written in a diary or remembered</li><li>Aadhaar and PAN photos buried in the phone gallery</li><li>Policies of different companies in different sheets</li><li>Prospects lost between WhatsApp chats</li></ul></div>
+      <div class="new"><h3>With PolicyCare</h3><ul><li>A daily screen shows who to call about renewals and payments</li><li>Every customer has their policies and documents in one profile</li><li>All companies and policy types in one searchable list</li><li>Every lead has a status and a follow-up date</li></ul></div>
     </div>
   </div>
-  <div class="wrap sec">
+  <div class="wrap sec" id="f-feat">
+    <h2>Everything an agent needs</h2>
+    <p class="sub">Simple tools for the work you do every day, with nothing to install.</p>
+    <div class="feats">
+      <div class="ft"><i>🏠</i><h3>A Today screen</h3><p>Renewals this week, pending payments and lead follow-ups, with a daily summary you can send to your own WhatsApp.</p></div>
+      <div class="ft"><i>🗂️</i><h3>All policies in one place</h3><p>Motor, health, life, term and more from every company, with vehicle details, premium and the policy copy PDF.</p></div>
+      <div class="ft"><i>⏰</i><h3>Renewal tracker</h3><p>See policies expiring in the next 30 days, those that expired in the last 30, and which ones are already renewed.</p></div>
+      <div class="ft"><i>💬</i><h3>WhatsApp in one tap</h3><p>Renewal, payment-due and follow-up messages are written for you. One tap opens WhatsApp with the customer.</p></div>
+      <div class="ft"><i>📋</i><h3>Leads management</h3><p>Track prospects from first call to policy with statuses, follow-up dates and notes. Turn a lead into a policy in one tap.</p></div>
+      <div class="ft"><i>🗄️</i><h3>Customer documents</h3><p>Keep Aadhaar, PAN, RC and other papers with each customer, so nothing is lost in the gallery.</p></div>
+      <div class="ft"><i>💰</i><h3>Commission and reports</h3><p>Enter a payout percentage and see the amount. Check month-wise commission and policies booked for any period.</p></div>
+      <div class="ft"><i>📥</i><h3>Excel import and export</h3><p>Bring in your existing sheet in a few taps, and download all your policies whenever you want.</p></div>
+      <div class="ft"><i>📱</i><h3>Phone and laptop</h3><p>Log in with your mobile number and password. Your data is the same on every device.</p></div>
+    </div>
+  </div>
+  <div class="wrap sec" id="f-how">
     <h2>Get started in 3 steps</h2>
     <p class="sub">No setup, no payment, no software to install.</p>
     <div class="steps">
       <div class="sp"><b>1</b><h3>Create your account</h3><p>Use your mobile number and a password.</p></div>
-      <div class="sp"><b>2</b><h3>Add your policies</h3><p>Fill in the details and attach the policy PDF.</p></div>
-      <div class="sp"><b>3</b><h3>Follow up on renewals</h3><p>Filter expiring policies and message customers on WhatsApp.</p></div>
+      <div class="sp"><b>2</b><h3>Add or import your clients</h3><p>Type in policies, or upload your Excel sheet.</p></div>
+      <div class="sp"><b>3</b><h3>Follow up every day</h3><p>Open the Today screen and message the customers who need you.</p></div>
+    </div>
+  </div>
+  <div class="wrap sec">
+    <h2>Built for how agents work</h2>
+    <div class="who" style="margin-top:22px">
+      <div class="ft"><h3>Solo agents</h3><p>Manage your whole book of clients from your phone, without an assistant.</p></div>
+      <div class="ft"><h3>LIC and life advisors</h3><p>Track premium due dates, payouts and each family’s policies.</p></div>
+      <div class="ft"><h3>Motor and health agents</h3><p>Search by vehicle number and never miss a yearly renewal.</p></div>
+      <div class="ft"><h3>Multi-company agents</h3><p>Keep every agency code’s policies together in one list.</p></div>
+    </div>
+  </div>
+  <div class="wrap sec"><div class="secure"><h3>Your clients’ data stays yours</h3><p>Each agent’s data is kept separate and opens only after login. Documents are stored in a private space, and you can download all your policies at any time.</p></div></div>
+  <div class="wrap sec" id="f-faq" style="max-width:760px">
+    <h2>Questions agents ask</h2>
+    <div style="margin-top:22px">
+      <details class="faq"><summary>Is PolicyCare really free?</summary><p>Yes. You can create an account and use every feature at no cost.</p></details>
+      <details class="faq"><summary>Does it send WhatsApp reminders automatically?</summary><p>Not automatically, because automatic messages need a paid WhatsApp Business service. Instead, PolicyCare shows who needs a call each day and writes the message for you, and one tap opens WhatsApp. You can also send yourself a daily summary.</p></details>
+      <details class="faq"><summary>Can I use it for many insurance companies?</summary><p>Yes. Add policies of any company and any type, and search or filter them in one place.</p></details>
+      <details class="faq"><summary>Can I bring in my Excel data?</summary><p>Yes. Use Import from Excel in the menu. PolicyCare matches your columns automatically and shows what will be imported before you confirm.</p></details>
+      <details class="faq"><summary>Does it work on my phone?</summary><p>Yes. Open the website in your phone browser, and add it to your home screen to open it like an app.</p></details>
+      <details class="faq"><summary>Is my data safe?</summary><p>Your data is stored under your own login and is not visible to other agents. Choose a strong password and keep it to yourself.</p></details>
     </div>
   </div>
   <div class="wrap"><div class="band"><h2>Ready to organise your policies?</h2><p>Create your free PolicyCare account in under a minute.</p><button class="btn lg" onclick="showLogin('up')">Get started free</button></div></div>
-  <footer class="foot">© 2026 PolicyCare · Built for insurance agents</footer>
+  <footer class="foot">© 2026 PolicyCare · Built for insurance agents in India</footer>
 </section>
 
 <section id="login" class="hide">
@@ -191,18 +409,22 @@ main .tabs{max-width:560px}
 <section id="app" class="hide">
   <header>
     <div class="logo" onclick="goHome()" title="Go to home page"><i>✦</i>PolicyCare</div>
+    <button class="btn sm" id="hadd" onclick="$('fab').onclick()">＋ New</button>
     <div style="position:relative">
       <button class="btn ghost sm mbtn" onclick="tgm()">Menu ☰<i id="md" class="dot hide"></i></button>
       <div id="mm" class="menu hide">
         <div class="mi"><small id="who"></small><br><small id="cs" style="font-weight:600"></small></div>
         <button onclick="tgm();openImp()">Import from Excel</button>
+        <button id="thb" onclick="tgTheme()">Light mode</button>
+        <button onclick="tgm();exportCsv()">Download all policies (CSV)</button>
         <button onclick="logout()">Log out</button>
       </div>
     </div>
   </header>
   <main>
-    <div class="tabs"><button id="tPol" class="on" onclick="setView('pol')">Policies</button><button id="tRen" onclick="setView('ren')">Renewals</button><button id="tRep" onclick="setView('rep')">Report</button></div>
-    <div id="vPol">
+    <div class="tabs"><button id="tTod" class="on" onclick="setView('tod')"><span class="ni">🏠</span>Today</button><button id="tPol" onclick="setView('pol')"><span class="ni">📄</span>Policies</button><button id="tRen" onclick="setView('ren')"><span class="ni">🔁</span>Renewals</button><button id="tLead" onclick="setView('lead')"><span class="ni">👥</span>Leads</button><button id="tPos" onclick="setView('pos')"><span class="ni">🖼️</span>Poster</button><button id="tRep" onclick="setView('rep')"><span class="ni">📊</span>Report</button></div>
+    <div id="vTod"></div>
+    <div id="vPol" class="hide">
       <input id="q" placeholder="Search name, mobile, policy or vehicle no." oninput="render()" style="margin-bottom:12px">
       <div class="prow"><label>Showing</label><select id="psel" onchange="perChg('p')"><option value="this">This month</option><option value="last">Last month</option><option value="3m">Last 3 months</option><option value="6m">Last 6 months</option><option value="year">This year</option><option value="all">All time</option><option value="custom">Custom dates…</option></select></div>
       <div id="pcd" class="bar hide" style="align-items:flex-end">
@@ -214,6 +436,45 @@ main .tabs{max-width:560px}
       <div class="list" id="list"></div>
     </div>
     <div id="vRen" class="hide"><div id="rnTop"></div><div class="list" id="rnList"></div></div>
+    <div id="vLead" class="hide">
+      <input id="lq" placeholder="Search leads by name, mobile or notes" oninput="renderLeads()" style="margin-bottom:12px">
+      <div id="lTop"></div>
+      <div class="list" id="lList"></div>
+    </div>
+    <div id="vPos" class="hide">
+      <div class="rcard">
+        <h3>Vehicle insurance poster</h3>
+        <p class="hint">A new design is picked automatically every day. Your mobile number and email are added on it. Download it, or share it on WhatsApp.</p>
+        <div class="pgrid">
+          <div class="pprev"><canvas id="pcv" width="1080" height="1350"></canvas></div>
+          <div>
+            <label>Headline</label>
+            <input id="ph1" oninput="renderPoster()" autocomplete="off">
+            <label style="margin-top:10px">Offer line (optional)</label>
+            <input id="ph2" oninput="renderPoster()" placeholder="e.g. Renew this month and get a free check-up" autocomplete="off">
+            <label style="margin-top:10px">Design</label>
+            <select id="pdes" onchange="POS.idx=+this.value;renderPoster()"></select>
+            <div class="qrow" style="margin-top:12px">
+              <button class="btn ghost sm" onclick="pNext()">Another design</button>
+              <button class="btn ghost sm" onclick="$('pbg').click()">Use my car photo</button>
+              <button class="btn ghost sm" onclick="pBg(null)">Remove photo</button>
+            </div>
+            <input type="file" id="pbg" accept="image/*" class="hide" onchange="pBg(this)">
+            <div class="rcard" style="margin-top:14px;padding:14px">
+              <h3 style="font-size:14px">Your contact on the poster</h3>
+              <label>Agent name</label><input id="pan" onchange="pSaveProf()" autocomplete="off">
+              <label style="margin-top:8px">Agency name</label><input id="pag" onchange="pSaveProf()" autocomplete="off">
+              <label style="margin-top:8px">Mobile number</label><input id="pmo" type="tel" inputmode="numeric" maxlength="10" onchange="pSaveProf()" autocomplete="off">
+              <label style="margin-top:8px">Email</label><input id="pem" type="email" onchange="pSaveProf()" autocomplete="off">
+            </div>
+            <div class="acts" style="margin-top:14px">
+              <button class="btn" onclick="pDownload()">Download PNG</button>
+              <button class="btn wa" onclick="pShare()">Share on WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="vRep" class="hide">
       <div class="prow"><label>Period</label><select id="rsel" onchange="perChg('r')"><option value="this">This month</option><option value="last">Last month</option><option value="3m">Last 3 months</option><option value="6m">Last 6 months</option><option value="year">This year</option><option value="all">All time</option><option value="custom">Custom dates…</option></select></div>
       <div id="rcd" class="bar hide" style="align-items:flex-end">
@@ -222,11 +483,12 @@ main .tabs{max-width:560px}
       </div>
       <div class="stats" id="rs"></div>
       <div class="rcard"><h3>Month-wise policies booked</h3><p class="hint">Counted by policy start date (or the date you added it, if no start date). Tap a month to see only that month.</p><div id="rm"></div></div>
+      <div class="rcard"><h3>Commission (payout) month-wise</h3><p class="hint">Payout amount of the policies booked in each month.</p><div id="rcm"></div></div>
       <div class="rg"><div class="rcard"><h3>By company</h3><div id="rc"></div></div><div class="rcard"><h3>By insurance type</h3><div id="rtp"></div></div></div>
       <div class="rcard"><h3>Policies booked in this period</h3><div id="rl"></div></div>
     </div>
   </main>
-  <button class="btn fab" onclick="openForm()">＋ New Policy</button>
+  <button class="btn fab" id="fab" onclick="openForm()">＋ New Policy</button>
 </section>
 
 <div id="modal" class="hide" onclick="if(event.target===this)closeForm()">
@@ -248,8 +510,9 @@ main .tabs{max-width:560px}
       <div class="full vh"><label>Vehicle model</label><input id="vm" placeholder="e.g. Swift VXi 2021" list="dlVm" autocomplete="off"><datalist id="dlVm"></datalist></div>
       <div class="full sh">Amount</div>
       <div><label>Amount without GST (₹)</label><input id="am" type="number" inputmode="decimal" oninput="calcAm()"></div>
+      <div><label>Discount (%)</label><input id="dc" type="number" inputmode="decimal" placeholder="e.g. 10" oninput="calcAm()"></div>
       <div><label>Premium incl. 18% GST (₹)</label><input id="pr" type="number" inputmode="decimal"></div>
-      <div class="full" style="margin-top:-4px"><span class="fl">Premium = amount + 18% GST (auto-filled, you can edit it). Payout is calculated on the amount without GST.</span></div>
+      <div class="full" style="margin-top:-4px"><span class="fl">Discount is taken off the amount before GST. Premium = (amount − discount) + 18% GST, auto-filled and editable. Payout is calculated on the amount after discount.</span><span class="fl" id="dcs" style="color:var(--pri);font-weight:600"></span></div>
       <div class="full"><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
       <div><label>Payout (%)</label><input id="pc" type="number" inputmode="decimal" oninput="calcPo()" placeholder="e.g. 50"></div>
       <div><label>Payout amount (₹)</label><input id="po" type="number" inputmode="decimal"></div>
@@ -273,7 +536,39 @@ main .tabs{max-width:560px}
   <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="closeImp()">Cancel</button><button class="btn hide" id="imGo" onclick="doImport()">Import</button></div>
 </div></div>
 
-<div id="cm" class="hide" onclick="if(event.target===this)closeCm()"><div class="cbox"><h3 style="margin:0 0 8px">Delete this policy?</h3><p id="cmt" style="color:var(--mut);margin:0 0 18px"></p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn ghost" onclick="closeCm()">Cancel</button><button class="btn danger" onclick="doDel()">Yes, delete</button></div></div></div>
+<div id="lm" class="hide" onclick="if(event.target===this)closeLead()"><div class="sheet">
+  <h2 id="lmt" style="margin:0 0 14px">New Lead</h2>
+  <div class="grid">
+    <div class="full"><label>Name *</label><input id="lname"></div>
+    <div class="full"><label>Mobile number *</label><input id="lmob" type="tel" inputmode="numeric" maxlength="10"></div>
+    <div><label>Interested in</label><select id="lty"><option>Motor</option><option>Health</option><option>Life</option><option>Term</option><option>Travel</option><option>Fire / Property</option><option>Other</option></select></div>
+    <div><label>Status</label><select id="lst"><option>New</option><option>Contacted</option><option>Interested</option><option>Quote sent</option><option>Won</option><option>Lost</option></select></div>
+    <div><label>Next follow-up</label><input id="lfu" type="date"></div>
+    <div><label>Expected premium (₹)</label><input id="lpr" type="number" inputmode="decimal"></div>
+    <div class="full qrow" style="margin:0"><button class="btn ghost sm" onclick="lfuSet(0)">Today</button><button class="btn ghost sm" onclick="lfuSet(1)">Tomorrow</button><button class="btn ghost sm" onclick="lfuSet(3)">In 3 days</button><button class="btn ghost sm" onclick="lfuSet(7)">In a week</button></div>
+    <div class="full"><label>Notes</label><input id="lnote" placeholder="e.g. car renewal in March, wants family floater"></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end"><button class="btn ghost" onclick="closeLead()">Cancel</button><button class="btn" onclick="saveLead()">Save</button></div>
+</div></div>
+
+<div id="cp" class="hide" onclick="if(event.target===this)closeCust()"><div class="sheet">
+  <div class="row" style="align-items:center"><h2 id="cpt" style="margin:0">Customer</h2><button class="btn ghost sm" onclick="closeCust()">Close</button></div>
+  <div id="cpb"></div>
+</div></div>
+
+<div id="dm" class="hide" onclick="if(event.target===this)closeDocs()"><div class="sheet">
+  <div class="row" style="align-items:center"><h2 id="dmt" style="margin:0">Documents</h2><button class="btn ghost sm" onclick="closeDocs()">Close</button></div>
+  <p style="color:var(--mut);font-size:13px;margin:6px 0 10px">Keep Aadhaar, PAN, RC and other papers of this customer in one place. Photos are shrunk automatically to save space.</p>
+  <div id="dml"></div>
+  <div class="rcard" style="margin-top:12px"><h3>Add a document</h3>
+    <label style="margin-top:8px">Type</label><select id="dtype"><option>Aadhaar card</option><option>PAN card</option><option>Driving licence</option><option>RC book</option><option>Photo</option><option>Policy document</option><option>Other</option></select>
+    <label style="margin-top:10px">Photo or PDF</label><input type="file" id="dfile" accept="image/*,application/pdf,.pdf" onchange="$('dfn').textContent=this.files[0]?this.files[0].name:''">
+    <span class="fl" id="dfn"></span>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="uploadDoc()">Upload</button>
+  </div>
+</div></div>
+
+<div id="cm" class="hide" onclick="if(event.target===this)closeCm()"><div class="cbox"><h3 id="cmh" style="margin:0 0 8px">Delete this policy?</h3><p id="cmt" style="color:var(--mut);margin:0 0 18px"></p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn ghost" onclick="closeCm()">Cancel</button><button class="btn danger" onclick="doDel()">Yes, delete</button></div></div></div>
 
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -284,10 +579,13 @@ var $=function(i){return document.getElementById(i)};
 var CFG={url:'https://zikzaacajuksvqojhzzi.supabase.co',key:'sb_publishable_ejt18cbmPdhMj9CC6Zv9Nw_nQYEkyWA'};
 var KEY='policycare_v1',SK='policycare_session',UK='policycare_users',sb=null,uid=null,pending=null;
 try{if(CFG.url&&CFG.key&&window.supabase)sb=window.supabase.createClient(CFG.url,CFG.key)}catch(e){}
-var data=[],editId=null,otp=null,mobile='',authed=false,renewFrom=null;
+var PROF={},POS={idx:-1,bg:null,inited:0};
+var data=[],editId=null,otp=null,mobile='',authed=false,renewFrom=null,convL=null,LEADS=[],DOCS=[],dcur=null,editL=null,LF='open';
 function ls(op,k,v){try{if(op==='g')return localStorage.getItem(k);if(op==='s')localStorage.setItem(k,v);if(op==='d')localStorage.removeItem(k)}catch(e){}return null}
-function load(){try{data=JSON.parse(ls('g',KEY+'_'+mobile)||'[]')}catch(e){data=[]}}
+function load(){try{data=JSON.parse(ls('g',KEY+'_'+mobile)||'[]')}catch(e){data=[]}try{LEADS=JSON.parse(ls('g','policycare_leads_'+mobile)||'[]')}catch(e){LEADS=[]}try{DOCS=JSON.parse(ls('g','policycare_docs_'+mobile)||'[]')}catch(e){DOCS=[]}}
 function persist(){if(sb)return;try{localStorage.setItem(KEY+'_'+mobile,JSON.stringify(data))}catch(e){toast('Browser storage is full. Remove some policy copies.')}}
+function persistX(){if(sb)return;try{localStorage.setItem('policycare_leads_'+mobile,JSON.stringify(LEADS));localStorage.setItem('policycare_docs_'+mobile,JSON.stringify(DOCS))}catch(e){toast('Browser storage is full. Remove some documents.')}}
+function ingest(rows){data=[];LEADS=[];DOCS=[];rows.forEach(function(x){var d=x.data||{};d.id=x.id;if(d.kind==='lead')LEADS.push(d);else if(d.kind==='doc')DOCS.push(d);else if(d.kind==='profile')PROF=d;else data.push(d)})}
 function toast(m){var t=document.createElement('div');t.id='toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function inr(n){return '₹'+(Number(n)||0).toLocaleString('en-IN')}
@@ -297,6 +595,7 @@ function days(d){if(!d)return 9999;var t=new Date();t.setHours(0,0,0,0);return M
 /* Auth */
 var mode='in';
 function showLogin(m){if(authed){toDash();return}$('home').classList.add('hide');$('login').classList.remove('hide');setMode(m);window.scrollTo(0,0)}
+function sc(id){var e=document.getElementById(id);if(e)e.scrollIntoView({behavior:"smooth",block:"start"})}
 function hnav(){$('hn').innerHTML=authed?'<button class="btn sm" onclick="toDash()">Open dashboard</button>':'<button class="btn ghost sm" onclick="showLogin(\'in\')">Log in</button><button class="btn sm" onclick="showLogin(\'up\')">Get started</button>'}
 function goHome(){$('app').classList.add('hide');$('login').classList.add('hide');$('home').classList.remove('hide');hnav();window.scrollTo(0,0)}
 function toDash(){$('home').classList.add('hide');$('login').classList.add('hide');$('app').classList.remove('hide');window.scrollTo(0,0)}
@@ -324,12 +623,12 @@ if(sb){var g=await sb.auth.getSession();if(!g.data.session)return;uid=g.data.ses
 else{var m=ls('g',SK);if(!m)return;mobile=m;load()}
 authed=true;$('home').classList.add('hide');$('login').classList.add('hide');$('app').classList.remove('hide');$('who').textContent='+91 '+mobile;render();
 if(sb){var r=await sb.from('pc_policies').select('id,data').order('updated_at',{ascending:false});
-if(r.error){cstat('⚠ Cloud load failed: '+r.error.message,1);toast('Could not load data: '+r.error.message)}else{data=r.data.map(function(x){var d=x.data;d.id=x.id;return d});render();cstat('☁ Synced · '+data.length+' in cloud')}}}
+if(r.error){cstat('⚠ Cloud load failed: '+r.error.message,1);toast('Could not load data: '+r.error.message)}else{ingest(r.data);render();cstat('☁ Synced · '+data.length+' in cloud')}}}
 function logout(){if(sb){sb.auth.signOut().then(function(){location.reload()})}else{ls('d',SK);location.reload()}}
 function cstat(t,bad){$('cs').textContent=t;$('cs').style.color=bad?'var(--bad)':'var(--ok)';$('md').classList.toggle('hide',!bad)}
 async function cloud(o){if(!sb)return;var d=Object.assign({},o);delete d.id;
 var r=await sb.from('pc_policies').upsert({id:o.id,user_id:uid,data:d,updated_at:new Date().toISOString()});if(r.error){cstat('⚠ Not saved to cloud: '+r.error.message,1);toast('Cloud save failed: '+r.error.message)}else cstat('☁ Saved to cloud')}
-async function cloudDel(p){if(!sb||!p)return;if(p.pdfPath)sb.storage.from('policy-pdfs').remove([p.pdfPath]);
+async function cloudDel(p){if(!sb||!p)return;var fp=[p.pdfPath,p.path].filter(Boolean);if(fp.length)sb.storage.from('policy-pdfs').remove(fp);
 var r=await sb.from('pc_policies').delete().eq('id',p.id);if(r.error){cstat('⚠ Cloud delete failed: '+r.error.message,1)}else cstat('☁ Saved to cloud')}
 async function viewCopy(id){var p=data.find(function(x){return x.id===id});if(!p)return;var w=null;
 try{if(sb&&p.pdfPath){w=window.open('','_blank');
@@ -340,12 +639,12 @@ else toast('No policy copy attached')}catch(e){if(w)w.close();toast('Could not o
 
 /* form */
 function vis(){var m=$('ty').value==='Motor';document.querySelectorAll('.vh').forEach(function(e){e.classList.toggle('hide',!m)})}
-var F=['name','mob','pno','co','ty','am','pr','pc','po','pay','sd','ed','vt','vm','vn'];
+var F=['name','mob','pno','co','ty','am','dc','pr','pc','po','pay','sd','ed','vt','vm','vn'];
 function pickFile(inp){var f=inp.files[0];pending=null;$('fn').textContent='';if(!f)return;
 if(f.type!=='application/pdf'&&!/\.pdf$/i.test(f.name)){toast('Please choose a PDF file');inp.value='';return}
 var max=sb?10:1.5;if(f.size>max*1048576){toast('PDF is too large (max '+max+' MB'+(sb?'':' in demo mode')+')');inp.value='';return}
 pending=f;$('fn').textContent='Selected: '+f.name}
-function openForm(id){editId=id||null;pending=null;renewFrom=null;var p=data.find(function(x){return x.id===id})||{};$('mt').textContent=id?'Edit Policy':'New Policy';
+function openForm(id){editId=id||null;pending=null;renewFrom=null;convL=null;var p=data.find(function(x){return x.id===id})||{};$('mt').textContent=id?'Edit Policy':'New Policy';
 F.forEach(function(k){$(k).value=p[k]==null?(k==='ty'?'Motor':k==='vt'?'Two-wheeler':''):p[k]});
 $('file').value='';$('fn').textContent=p.pdfName?'Attached: '+p.pdfName+' (choose a new file to replace it)':'';vis();sugg();$('modal').classList.remove('hide')}
 function closeForm(){$('modal').classList.add('hide')}
@@ -363,11 +662,18 @@ if(pending){try{
  o.pdfName=pending.name}catch(e){toast('PDF upload failed: '+(e.message||'error'));return}}
 if(!editId&&renewFrom)o.renewOf=renewFrom;renewFrom=null;
 if(editId){var i=data.findIndex(function(x){return x.id===editId});data[i]=o}else{data.unshift(o)}
-pending=null;persist();await cloud(o);closeForm();render();toast('Saved')}
-var delId=null;
-function del(id){var p=data.find(function(x){return x.id===id});if(!p)return;delId=id;$('cmt').innerHTML='<b>'+esc(p.name)+'</b> · '+esc(p.co)+' · '+esc(p.pno)+'<br>This cannot be undone.'+(p.pdfName?' The attached policy copy will also be removed.':'');$('cm').classList.remove('hide')}
-function closeCm(){delId=null;$('cm').classList.add('hide')}
-function doDel(){var p=data.find(function(x){return x.id===delId});closeCm();if(!p)return;data=data.filter(function(x){return x.id!==p.id});persist();cloudDel(p);render();toast('Policy deleted')}
+pending=null;persist();await cloud(o);if(convL){var ld=LEADS.find(function(x){return x.id===convL});convL=null;if(ld){ld.st='Won';persistX();await cloud(ld)}}closeForm();render();toast('Saved')}
+var delSel=null;
+function askDel(kind,id){var list=kind==='lead'?LEADS:kind==='doc'?DOCS:data,p=list.find(function(x){return x.id===id});if(!p)return;delSel={kind:kind,id:id};
+$('cmh').textContent=kind==='lead'?'Delete this lead?':kind==='doc'?'Delete this document?':'Delete this policy?';
+$('cmt').innerHTML=kind==='lead'?'<b>'+esc(p.name)+'</b> · +91 '+esc(p.mob)+'<br>This cannot be undone.':kind==='doc'?'<b>'+esc(p.label)+'</b> · '+esc(p.name||p.mob)+'<br>This cannot be undone.':'<b>'+esc(p.name)+'</b> · '+esc(p.co)+' · '+esc(p.pno)+'<br>This cannot be undone.'+(p.pdfName?' The attached policy copy will also be removed.':'');
+$('cm').classList.remove('hide')}
+function del(id){askDel('policy',id)}
+function closeCm(){delSel=null;$('cm').classList.add('hide')}
+function doDel(){var s=delSel;closeCm();if(!s)return;
+if(s.kind==='lead'){var l=LEADS.find(function(x){return x.id===s.id});if(!l)return;LEADS=LEADS.filter(function(x){return x.id!==s.id});persistX();cloudDel(l);render();toast('Lead deleted');return}
+if(s.kind==='doc'){var d=DOCS.find(function(x){return x.id===s.id});if(!d)return;DOCS=DOCS.filter(function(x){return x.id!==s.id});persistX();cloudDel(d);if(dcur)renderDocs();render();toast('Document deleted');return}
+var p=data.find(function(x){return x.id===s.id});if(!p)return;data=data.filter(function(x){return x.id!==p.id});persist();cloudDel(p);render();toast('Policy deleted')}
 
 /* actions */
 function msgFor(p){var d=days(p.ed);var when=d<0?'expired on '+fd(p.ed):d===0?'expires today':'is due for renewal on '+fd(p.ed);
@@ -380,7 +686,7 @@ function callp(id){var p=data.find(function(x){return x.id===id});location.href=
 async function pdf(id){var p=data.find(function(x){return x.id===id});
 try{var J=window.jspdf.jsPDF,d=new J();d.setFillColor(79,70,229);d.rect(0,0,210,28,'F');d.setTextColor(255);d.setFontSize(20);d.text('PolicyCare',14,18);d.setFontSize(10);d.text('Policy Summary',160,18);
 d.setTextColor(20);var rows=[['Customer',p.name],['Mobile','+91 '+p.mob],['Policy number',p.pno],['Insurance company',p.co],['Insurance type',p.ty]];
-if(p.vm||p.vn)rows.push(['Vehicle',[p.vt,p.vm,p.vn].filter(Boolean).join(' - ')]);
+if(p.dc)rows.push(['Discount',p.dc+'%']);if(p.vm||p.vn)rows.push(['Vehicle',[p.vt,p.vm,p.vn].filter(Boolean).join(' - ')]);
 rows.push(['Premium','Rs. '+(Number(p.pr)||0).toLocaleString('en-IN')],['Payment received','Rs. '+(Number(p.pay)||0).toLocaleString('en-IN')],['Balance','Rs. '+Math.max(0,(Number(p.pr)||0)-(Number(p.pay)||0)).toLocaleString('en-IN')],['Start date',fd(p.sd)],['Expiry / renewal',fd(p.ed)]);
 var y=46;d.setFontSize(12);rows.forEach(function(r){d.setTextColor(110);d.text(r[0],16,y);d.setTextColor(20);d.text(String(r[1]),80,y);d.setDrawColor(228);d.line(14,y+3,196,y+3);y+=12});
 d.setFontSize(9);d.setTextColor(130);d.text('Generated on '+new Date().toLocaleDateString('en-IN')+' via PolicyCare',14,285);
@@ -476,6 +782,176 @@ toast('Saving to cloud…');
 for(var i=0;i<rows.length;i+=200){var x=await sb.from('pc_policies').upsert(rows.slice(i,i+200));if(x.error){failed=true;cstat('⚠ Import not fully saved: '+x.error.message,1);toast('Cloud save failed: '+x.error.message);break}}
 if(!failed)cstat('☁ Imported '+rows.length+' policies to cloud')}
 closeImp();render();toast(ok.length+' policies imported')}
+/* Today, Leads, Documents, Customers */
+var ST=['New','Contacted','Interested','Quote sent','Won','Lost'];
+function today(){return iso(new Date())}
+function leadOpen(l){return l.st!=='Won'&&l.st!=='Lost'}
+function goRen(seg,f){R.seg=seg;R.f=f||'all';setView('ren')}
+function goDue(){P.show='dueall';$('q').value='';setView('pol')}
+function goLeads(f){LF=f;setView('lead')}
+function todayData(){var td=today();
+var week=data.filter(function(p){var d=days(p.ed);return !renewedBy(p)&&d>=0&&d<=7}).sort(function(a,b){return days(a.ed)-days(b.ed)});
+var lapsed=data.filter(function(p){var d=days(p.ed);return !renewedBy(p)&&d<0&&d>=-30});
+var dueL=data.filter(function(p){return dueAmt(p)>0}).sort(function(a,b){return dueAmt(b)-dueAmt(a)});
+var fu=LEADS.filter(function(l){return leadOpen(l)&&l.fu&&l.fu<=td}).sort(function(a,b){return a.fu<b.fu?-1:1});
+return {week:week,lapsed:lapsed,dueL:dueL,fu:fu}}
+function mini(p,mode){var d=days(p.ed),du=dueAmt(p);
+var tag=mode==='pay'?'<span class="tag t-bad">Due '+inr(du)+'</span>':'<span class="tag '+(d<0?'t-bad':'t-warn')+'">'+(d<0?'Expired '+(-d)+'d ago':d===0?'Today':d+'d left')+'</span>';
+return '<div class="mini"><div class="mi-main" onclick="openCust(\''+p.mob+'\')"><b>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</b><small>'+esc(p.co)+' · '+esc(p.ty)+' · '+fd(p.ed)+'</small></div>'+tag+
+'<button class="btn sm wa" onclick="'+(mode==='pay'?'waPay':'wa')+'(\''+p.id+'\')">WhatsApp</button><button class="btn sm call" onclick="callp(\''+p.id+'\')">Call</button></div>'}
+function leadMini(l){var od=l.fu&&l.fu<today();
+return '<div class="mini"><div class="mi-main" onclick="openLead(\''+l.id+'\')"><b>'+esc(l.name)+'</b><small>'+esc(l.ty)+' · '+esc(l.st)+' · follow-up '+fd(l.fu)+'</small></div><span class="tag '+(od?'t-bad':'t-warn')+'">'+(od?'Overdue':'Today')+'</span>'+
+'<button class="btn sm wa" onclick="waLead(\''+l.id+'\')">WhatsApp</button><button class="btn sm call" onclick="callL(\''+l.id+'\')">Call</button></div>'}
+function sect(title,arr,fn,viewAll,empty){return '<div class="rcard sec2"><div class="sh2"><h3>'+title+' <span style="color:var(--mut);font-weight:500">('+arr.length+')</span></h3>'+(arr.length>5?'<button class="btn ghost sm" onclick="'+viewAll+'">View all</button>':'')+'</div>'+
+(arr.length?arr.slice(0,5).map(fn).join(''):'<p class="hint" style="margin:8px 0 0">'+empty+'</p>')+'</div>'}
+function renderToday(){var T=todayData(),dn=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+var h='<div class="row" style="align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap"><div><h2 style="margin:0">Today</h2><small style="color:var(--mut)">'+dn+'</small></div><button class="btn ghost sm" onclick="sendSummary()">Send summary to my WhatsApp</button></div>';
+h+='<div class="stats">'+[['Renew this week',T.week.length,"goRen('next')"],['Missed in last 30 days',T.lapsed.length,"goRen('last','pend')"],['Payment pending',T.dueL.length,'goDue()'],['Lead follow-ups',T.fu.length,"goLeads('due')"]].map(function(c){return '<div class="st click" onclick="'+c[2]+'"><b>'+c[1]+'</b><span>'+c[0]+'</span><small>tap to view</small></div>'}).join('')+'</div>';
+h+='<div class="wgrid">'+sect('Renewals due in 7 days',T.week,function(p){return mini(p,'ren')},"goRen('next')",'No renewals in the next 7 days.')+sect('Payment pending',T.dueL,function(p){return mini(p,'pay')},'goDue()','No pending payments.')+sect('Lead follow-ups',T.fu,leadMini,"goLeads('due')",'No leads to follow up today. Add leads in the Leads tab.')+'</div>';
+$('vTod').innerHTML=h}
+function sendSummary(){var T=todayData(),L=['*PolicyCare summary* – '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})];
+var sec=function(t,a,f){if(a.length){L.push('','*'+t+' ('+a.length+')*');a.slice(0,10).forEach(function(x){L.push('• '+f(x))});if(a.length>10)L.push('…and '+(a.length-10)+' more')}};
+sec('Renewals due in 7 days',T.week,function(p){return p.name+(p.vn?' ('+p.vn+')':'')+' – '+p.co+' – '+fd(p.ed)});
+sec('Payment pending',T.dueL,function(p){return p.name+' – '+inr(dueAmt(p))});
+sec('Lead follow-ups',T.fu,function(l){return l.name+' – '+l.ty+' – +91 '+l.mob});
+if(L.length===1)L.push('','Nothing urgent today.');
+window.open('https://wa.me/91'+mobile+'?text='+encodeURIComponent(L.join('\n')),'_blank')}
+/* Leads */
+function lflt(f){LF=f;renderLeads()}
+function tglL(id){var e=$('lmo-'+id),b=$('lmb-'+id),h=e.classList.contains('hide');e.classList.toggle('hide',!h);b.textContent=h?'Less ▴':'More ▾'}
+function leadCard(l){var td=today(),op=leadOpen(l),od=l.fu&&l.fu<td&&op,id=l.id,cls=l.st==='Won'?'t-ok':l.st==='Lost'?'t-bad':l.st==='New'?'t-new':'t-warn';
+return '<div class="pc"><div class="row"><div><h3>'+esc(l.name)+'</h3><small>+91 '+esc(l.mob)+' · '+esc(l.ty)+'</small></div><span class="tag '+cls+'">'+esc(l.st)+'</span></div>'+
+'<div class="kv"><div><span>Next follow-up</span>'+(l.fu?'<em style="font-style:normal;color:'+(od?'var(--bad)':'inherit')+'">'+fd(l.fu)+(od?' (overdue)':'')+'</em>':'—')+'</div><div><span>Expected premium</span>'+(l.pr?inr(l.pr):'—')+'</div></div>'+
+(l.note?'<p class="hint" style="margin:0 0 10px">'+esc(l.note)+'</p>':'')+
+'<div class="acts"><button class="btn sm wa" onclick="waLead(\''+id+'\')">WhatsApp</button><button class="btn sm call" onclick="callL(\''+id+'\')">Call</button>'+(op?'<button class="btn sm" onclick="leadToPolicy(\''+id+'\')">Make policy</button>':'')+'<button class="btn sm ghost" id="lmb-'+id+'" onclick="tglL(\''+id+'\')">More ▾</button></div>'+
+'<div class="more hide" id="lmo-'+id+'"><div class="acts"><button class="btn sm ghost" onclick="openLead(\''+id+'\')">Edit</button><button class="btn sm ghost" onclick="askDel(\'lead\',\''+id+'\')">Delete</button></div></div></div>'}
+function renderLeads(){var q=($('lq').value||'').trim().toLowerCase(),td=today();
+var open=LEADS.filter(leadOpen),dueL=open.filter(function(l){return l.fu&&l.fu<=td}),won=LEADS.filter(function(l){return l.st==='Won'}),lost=LEADS.filter(function(l){return l.st==='Lost'});
+var sets={open:open,due:dueL,won:won,lost:lost,all:LEADS};
+var chips=[['open','Open',open.length],['due','Follow-up due',dueL.length],['won','Won',won.length],['lost','Lost',lost.length],['all','All',LEADS.length]];
+var h='<div class="qrow">'+chips.map(function(c){return '<button class="btn ghost sm'+(LF===c[0]?' sel':'')+'" onclick="lflt(\''+c[0]+'\')">'+c[1]+' ('+c[2]+')</button>'}).join('')+'</div>';
+var L=(sets[LF]||open).filter(function(l){return !q||[l.name,l.mob,l.note,l.ty].join(' ').toLowerCase().indexOf(q)>-1});
+L=L.slice().sort(function(a,b){var af=a.fu||'9999',bf=b.fu||'9999';if(af!==bf)return af<bf?-1:1;return (b.created||'')<(a.created||'')?-1:1});
+$('lTop').innerHTML=h;$('lList').innerHTML=L.length?L.map(leadCard).join(''):'<div class="empty">'+(LEADS.length?'No leads here.':'No leads yet.<br>Tap “＋ New Lead” to add your first one.')+'</div>'}
+function openLead(id){editL=id||null;var l=LEADS.find(function(x){return x.id===id})||{};$('lmt').textContent=id?'Edit Lead':'New Lead';
+$('lname').value=l.name||'';$('lmob').value=l.mob||'';$('lty').value=l.ty||'Motor';$('lst').value=l.st||'New';$('lfu').value=l.fu||'';$('lpr').value=l.pr||'';$('lnote').value=l.note||'';$('lm').classList.remove('hide')}
+function closeLead(){$('lm').classList.add('hide')}
+function lfuSet(n){var d=new Date();d.setDate(d.getDate()+n);$('lfu').value=iso(d)}
+async function saveLead(){var o={name:$('lname').value.trim(),mob:$('lmob').value.replace(/\D/g,'').slice(-10),ty:$('lty').value,st:$('lst').value,fu:$('lfu').value,pr:$('lpr').value.trim(),note:$('lnote').value.trim()};
+if(!o.name||!/^\d{10}$/.test(o.mob)){toast('Name and a 10-digit mobile number are required');return}
+var old=editL?(LEADS.find(function(x){return x.id===editL})||{}):{};
+o.kind='lead';o.id=editL||('l'+Date.now().toString(36)+Math.random().toString(36).slice(2,5));o.created=old.created||today();
+if(editL){var i=LEADS.findIndex(function(x){return x.id===editL});LEADS[i]=o}else{LEADS.unshift(o)}
+persistX();await cloud(o);closeLead();render();toast('Lead saved')}
+function waLead(id){var l=LEADS.find(function(x){return x.id===id});if(!l)return;
+var m='Hello '+l.name+',\nThank you for your interest in '+l.ty+' insurance. I would be happy to help you find the right plan. When would be a good time to talk?';
+window.open('https://wa.me/91'+l.mob+'?text='+encodeURIComponent(m),'_blank')}
+function callL(id){var l=LEADS.find(function(x){return x.id===id});if(l)location.href='tel:+91'+l.mob}
+function leadToPolicy(id){var l=LEADS.find(function(x){return x.id===id});if(!l)return;openForm();convL=id;$('mt').textContent='New Policy from Lead';
+$('name').value=l.name;$('mob').value=l.mob;if(['Motor','Health','Life','Term','Travel','Fire / Property','Other'].indexOf(l.ty)>-1)$('ty').value=l.ty;vis();vnList()}
+/* Customer profile + documents */
+function custName(m){var p=data.find(function(x){return x.mob===m})||LEADS.find(function(x){return x.mob===m});return p?p.name:m}
+function docsOf(m){return DOCS.filter(function(d){return d.mob===m}).sort(function(a,b){return (b.added||'')<(a.added||'')?-1:1})}
+function profRow(p){var d=days(p.ed),rb=renewedBy(p),t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired']:d<=30?['t-warn',d+'d left']:['t-ok','Active'];
+return '<div class="mini"><div class="mi-main"><b>'+esc(p.co)+' · '+esc(p.ty)+(p.vn?' · '+esc(p.vn):'')+'</b><small>'+esc(p.pno)+' · expiry '+fd(p.ed)+' · '+inr(p.pr)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span><button class="btn sm ghost" onclick="closeCust();openForm(\''+p.id+'\')">Edit</button></div>'}
+function waTo(m){window.open('https://wa.me/91'+m,'_blank')}
+function telTo(m){location.href='tel:+91'+m}
+function openCust(m){var L=data.filter(function(p){return p.mob===m}).sort(function(a,b){return days(b.ed)-days(a.ed)});
+var prem=L.reduce(function(s,p){return s+(+p.pr||0)},0),du=L.reduce(function(s,p){return s+dueAmt(p)},0);
+$('cpt').textContent=custName(m);
+$('cpb').innerHTML='<p style="margin:6px 0 12px;color:var(--mut)">+91 '+esc(m)+'</p><div class="acts" style="margin-bottom:12px"><button class="btn sm wa" onclick="waTo(\''+m+'\')">WhatsApp</button><button class="btn sm call" onclick="telTo(\''+m+'\')">Call</button><button class="btn sm ghost" onclick="openDocs(\''+m+'\')">Documents ('+docsOf(m).length+')</button><button class="btn sm" onclick="newFor(\''+m+'\')">＋ New policy</button></div>'+
+'<div class="stats" style="grid-template-columns:repeat(3,1fr)"><div class="st"><b>'+L.length+'</b><span>Policies</span></div><div class="st"><b>'+inr(prem)+'</b><span>Total premium</span></div><div class="st"><b>'+inr(du)+'</b><span>Payment due</span></div></div>'+
+(L.length?'<div style="margin-top:8px">'+L.map(profRow).join('')+'</div>':'<p class="hint">No policies yet for this customer.</p>');
+$('cp').classList.remove('hide')}
+function closeCust(){$('cp').classList.add('hide')}
+function newFor(m){closeCust();openForm();$('name').value=custName(m);$('mob').value=m;vnList()}
+function openDocs(m){dcur=m;$('dmt').textContent='Documents · '+custName(m);$('dfile').value='';$('dfn').textContent='';renderDocs();$('dm').classList.remove('hide')}
+function closeDocs(){var m=dcur;dcur=null;$('dm').classList.add('hide');if(!$('cp').classList.contains('hide'))openCust(m)}
+function renderDocs(){var L=docsOf(dcur);
+$('dml').innerHTML=L.length?L.map(function(d){return '<div class="mini"><div class="mi-main" onclick="viewDoc(\''+d.id+'\')"><b>'+esc(d.label)+'</b><small>'+esc(d.fileName||'')+' · '+fd(d.added)+'</small></div><button class="btn sm ghost" onclick="viewDoc(\''+d.id+'\')">View</button><button class="btn sm ghost" onclick="askDel(\'doc\',\''+d.id+'\')">Delete</button></div>'}).join(''):'<p class="hint" style="margin:8px 0">No documents saved for this customer yet.</p>'}
+function compressImg(f){return new Promise(function(res,rej){var img=new Image(),u=URL.createObjectURL(f);img.onload=function(){var s=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(function(b){URL.revokeObjectURL(u);b?res(b):rej()},'image/jpeg',.75)};img.onerror=function(){rej()};img.src=u})}
+async function uploadDoc(){var f=$('dfile').files[0];if(!f){toast('Choose a photo or PDF first');return}
+var isImg=/^image\//.test(f.type),isPdf=f.type==='application/pdf'||/\.pdf$/i.test(f.name);
+if(!isImg&&!isPdf){toast('Only photos and PDF files are allowed');return}
+var blob=f,ext=isPdf?'pdf':'jpg';
+if(isImg){try{blob=await compressImg(f)}catch(e){blob=f}}
+var max=sb?10:1.2;if(blob.size>max*1048576){toast('File is too large (max '+max+' MB'+(sb?'':' in demo mode')+')');return}
+var o={id:'d'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),kind:'doc',mob:dcur,name:custName(dcur),label:$('dtype').value,fileName:f.name,ext:ext,added:today()};
+try{if(sb){toast('Uploading…');var path=uid+'/kyc/'+o.id+'.'+ext;var up=await sb.storage.from('policy-pdfs').upload(path,blob,{contentType:isPdf?'application/pdf':'image/jpeg'});if(up.error)throw up.error;o.path=path}
+else{o.dataUrl=await new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=rej;r.readAsDataURL(blob)})}}
+catch(e){toast('Upload failed: '+((e&&e.message)||'error'));return}
+DOCS.unshift(o);persistX();await cloud(o);$('dfile').value='';$('dfn').textContent='';renderDocs();toast('Document saved')}
+async function viewDoc(id){var d=DOCS.find(function(x){return x.id===id});if(!d)return;var w=null;
+try{if(sb&&d.path){w=window.open('','_blank');var r=await sb.storage.from('policy-pdfs').createSignedUrl(d.path,300);if(r.error)throw r.error;if(w){w.location.href=r.data.signedUrl}else{location.href=r.data.signedUrl}}
+else if(d.dataUrl){var bin=atob(d.dataUrl.split(',')[1]),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);window.open(URL.createObjectURL(new Blob([u],{type:d.dataUrl.split(';')[0].slice(5)})),'_blank')}}
+catch(e){if(w)w.close();toast('Could not open the document')}}
+/* Export */
+function exportCsv(){var H=['Customer name','Mobile number','Policy number','Insurance company','Insurance type','Amount without GST','Premium','Payout %','Payout amount','Payment received','Policy start date','Expiry date','Vehicle type','Vehicle model','Vehicle number'],K=['name','mob','pno','co','ty','am','pr','pc','po','pay','sd','ed','vt','vm','vn'];
+var q=function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+var rows=[H.join(',')].concat(data.map(function(p){return K.map(function(k){return q(p[k])}).join(',')}));
+var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.join('\r\n')],{type:'text/csv'}));a.download='PolicyCare_policies_'+today()+'.csv';a.click()}
+/* ===== Poster ===== */
+var DES=[
+ {n:'Teal road',bg:['#0f766e','#134e4a'],ac:'#5eead4',tx:'#ffffff',h:'Drive worry-free.',s:'Your car, covered on every road.',car:'#ffffff'},
+ {n:'Midnight gold',bg:['#111827','#1f2937'],ac:'#f59e0b',tx:'#ffffff',h:'Your car. Your cover.',s:'Motor insurance that keeps you moving.',car:'#f59e0b'},
+ {n:'Fresh light',bg:['#f0fdfa','#ccfbf1'],ac:'#0f766e',tx:'#0f172a',h:'Renew before you drive.',s:'Do not let your car cover lapse.',car:'#0f766e'},
+ {n:'Sunrise',bg:['#f97316','#db2777'],ac:'#fde68a',tx:'#ffffff',h:'Covered on every road.',s:'Smart motor insurance for busy drivers.',car:'#ffffff'},
+ {n:'Violet',bg:['#4c1d95','#7c3aed'],ac:'#c4b5fd',tx:'#ffffff',h:'Every kilometre, protected.',s:'Motor insurance that works for you.',car:'#ffffff'}];
+function dayIdx(){var d=new Date(),st=new Date(d.getFullYear(),0,0);return Math.floor((d-st)/864e5)%DES.length}
+function pLoad(){if(!sb){try{PROF=JSON.parse(ls('g','policycare_profile_'+mobile)||'{}')}catch(e){PROF={}}}
+ if(!POS.inited){POS.inited=1;POS.idx=dayIdx()}
+ $('pdes').innerHTML=DES.map(function(d,i){return '<option value="'+i+'">'+d.n+'</option>'}).join('');$('pdes').value=POS.idx;
+ $('pan').value=PROF.name||'';$('pag').value=PROF.agency||'';$('pmo').value=PROF.mobile||(/^\d{10}$/.test(mobile)?mobile:'');$('pem').value=PROF.email||'';
+ renderPoster()}
+function pSaveProf(){PROF={kind:'profile',id:'profile',name:$('pan').value.trim(),agency:$('pag').value.trim(),mobile:$('pmo').value.replace(/\D/g,'').slice(-10),email:$('pem').value.trim()};
+ $('pmo').value=PROF.mobile;
+ if(sb){cloud(PROF)}else{try{localStorage.setItem('policycare_profile_'+mobile,JSON.stringify(PROF))}catch(e){}}
+ renderPoster()}
+function pNext(){POS.idx=(POS.idx+1)%DES.length;$('pdes').value=POS.idx;renderPoster()}
+function pBg(inp){var f=inp&&inp.files&&inp.files[0];if(!f){POS.bg=null;if(inp)inp.value='';renderPoster();return}
+ var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){POS.bg=im;renderPoster()};im.src=r.result};r.readAsDataURL(f)}
+function wrapTxt(g,t,x,y,maxW,lh){var w=t.split(' '),line='';for(var i=0;i<w.length;i++){var test=line?line+' '+w[i]:w[i];if(g.measureText(test).width>maxW&&line){g.fillText(line,x,y);y+=lh;line=w[i]}else line=test}
+ if(line){g.fillText(line,x,y);y+=lh}return y}
+function drawCar(g,c){g.save();g.fillStyle=c;g.beginPath();g.roundRect(230,880,620,110,44);g.fill();
+ g.beginPath();g.moveTo(340,884);g.lineTo(420,790);g.lineTo(660,790);g.lineTo(740,884);g.closePath();g.fill();
+ g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.moveTo(372,880);g.lineTo(436,814);g.lineTo(540,814);g.lineTo(540,880);g.closePath();g.fill();
+ g.beginPath();g.moveTo(556,880);g.lineTo(556,814);g.lineTo(644,814);g.lineTo(708,880);g.closePath();g.fill();
+ [[370,980],[710,980]].forEach(function(w){g.fillStyle='#111827';g.beginPath();g.arc(w[0],w[1],64,0,7);g.fill();g.fillStyle='#9ca3af';g.beginPath();g.arc(w[0],w[1],28,0,7);g.fill()});
+ g.restore()}
+function renderPoster(){var cv=$('pcv');if(!cv)return;var g=cv.getContext('2d'),W=1080,H=1350,D=DES[POS.idx<0?dayIdx():POS.idx];
+ var light=D.tx==='#0f172a';
+ $('ph1').placeholder=D.h;
+ var head=$('ph1').value.trim()||D.h,offer=$('ph2').value.trim();
+ var gr=g.createLinearGradient(0,0,W,H);gr.addColorStop(0,D.bg[0]);gr.addColorStop(1,D.bg[1]);g.fillStyle=gr;g.fillRect(0,0,W,H);
+ if(POS.bg){var sc=Math.max(W/POS.bg.width,H/POS.bg.height),dw=POS.bg.width*sc,dh=POS.bg.height*sc;g.drawImage(POS.bg,(W-dw)/2,(H-dh)/2,dw,dh);
+  var ov=g.createLinearGradient(0,0,0,H);ov.addColorStop(0,'rgba(0,0,0,.55)');ov.addColorStop(.6,'rgba(0,0,0,.35)');ov.addColorStop(1,'rgba(0,0,0,.75)');g.fillStyle=ov;g.fillRect(0,0,W,H)}
+ else{g.globalAlpha=.12;g.fillStyle=D.ac;g.beginPath();g.arc(930,190,300,0,7);g.fill();g.beginPath();g.arc(120,1080,240,0,7);g.fill();g.globalAlpha=1}
+ var tx=POS.bg?'#ffffff':D.tx;
+ g.fillStyle=POS.bg?'#ffffff':D.ac;g.font='700 34px Inter, Arial, sans-serif';g.fillText('MOTOR INSURANCE',80,120);
+ g.fillStyle=tx;g.font='900 100px Inter, Arial, sans-serif';var y=wrapTxt(g,head,80,250,920,112);
+ g.font='400 42px Inter, Arial, sans-serif';g.fillStyle=tx;y=wrapTxt(g,D.s,80,y+20,900,56);
+ if(offer){g.font='700 38px Inter, Arial, sans-serif';var tw=g.measureText(offer).width+64;g.fillStyle=D.ac;g.beginPath();g.roundRect(80,y+30,Math.min(tw,920),74,37);g.fill();g.fillStyle='#111827';g.fillText(offer,112,y+80)}
+ drawCar(g,D.car);
+ g.fillStyle=light?'rgba(255,255,255,.75)':'rgba(0,0,0,.28)';g.beginPath();g.roundRect(60,1030,960,270,36);g.fill();
+ g.fillStyle=light?'#0f172a':'#ffffff';var lines=[];
+ if(PROF.name)lines.push(['700 54px Inter, Arial, sans-serif',PROF.name,58]);
+ if(PROF.agency)lines.push(['500 36px Inter, Arial, sans-serif',PROF.agency,52]);
+ if(PROF.mobile)lines.push(['600 40px Inter, Arial, sans-serif','Mobile: +91 '+PROF.mobile,52]);
+ if(PROF.email)lines.push(['600 40px Inter, Arial, sans-serif','Email: '+PROF.email,52]);
+ var yy=1100;lines.forEach(function(l){g.font=l[0];g.fillText(l[1],100,yy);yy+=l[2]});
+ if(!lines.length){g.font='500 36px Inter, Arial, sans-serif';g.fillText('Add your name, mobile and email below',100,1150)}
+}
+function pBlob(cb){$('pcv').toBlob(cb,'image/png')}
+function pFileName(){return 'PolicyCare_poster_'+today()+'.png'}
+function pDownload(){pBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=pFileName();a.click()})}
+function pWaText(){return 'Hello,\n'+(PROF.name?'This is '+PROF.name+(PROF.agency?' from '+PROF.agency:'')+'.':'')+' For your car insurance (new policy or renewal), please contact me.'+(PROF.mobile?'\nMobile: +91 '+PROF.mobile:'')+(PROF.email?'\nEmail: '+PROF.email:'')}
+function pShare(){pBlob(function(b){var f=new File([b],pFileName(),{type:'image/png'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'Car insurance',text:pWaText()}).catch(function(){})}
+ else{var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=pFileName();a.click();window.open('https://wa.me/?text='+encodeURIComponent(pWaText()),'_blank');toast('Poster downloaded. Attach it in WhatsApp.')}})}
+/* Theme switch (dark is the default) */
+function applyTheme(){var l=localStorage.getItem('policycare_theme')==='light';document.documentElement.setAttribute('data-theme',l?'light':'dark');var b=$('thb');if(b)b.textContent=l?'Dark mode':'Light mode'}
+function tgTheme(){var l=localStorage.getItem('policycare_theme')==='light';try{localStorage.setItem('policycare_theme',l?'dark':'light')}catch(e){}applyTheme()}
+applyTheme();
 /* Suggestions from old policies */
 var COS=['LIC','HDFC Ergo','ICICI Lombard','Bajaj Allianz','New India Assurance','Star Health','Tata AIG','SBI General'];
 function opt(v,l){return '<option value="'+esc(v)+'">'+esc(l||'')+'</option>'}
@@ -500,8 +976,8 @@ if(src==='vn'){$('ty').value='Motor';vis();if(p.vt)$('vt').value=p.vt;if(!$('vm'
 vnList()}
 /* Auto-calculations, renewals */
 function n2(x){return String(Math.round(x*100)/100)}
-function calcAm(){var a=parseFloat($('am').value);if(isNaN(a))return;$('pr').value=n2(a*1.18);calcPo()}
-function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value);if(isNaN(a)||isNaN(c))return;$('po').value=n2(a*c/100)}
+function calcAm(){var a=parseFloat($('am').value),d=parseFloat($('dc').value)||0;if(isNaN(a)){$('dcs').textContent='';return}var n=a-a*d/100;$('pr').value=n2(n*1.18);$('dcs').textContent=d?'Discount ₹'+n2(a*d/100)+' · after discount ₹'+n2(n)+' · premium with GST ₹'+n2(n*1.18):'';calcPo()}
+function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value),d=parseFloat($('dc').value)||0;if(isNaN(a)||isNaN(c))return;$('po').value=n2((a-a*d/100)*c/100)}
 function calcEd(){var v=$('sd').value;if(!v)return;var d=new Date(v+'T00:00:00');$('ed').value=iso(new Date(d.getFullYear()+1,d.getMonth(),d.getDate()-1))}
 function renewedBy(p){var b=bdate(p),best=null;
 for(var i=0;i<data.length;i++){var q=data[i];if(q.id===p.id)continue;var qb=bdate(q);
@@ -516,8 +992,11 @@ if(p.ty!=='Motor')$('pno').value=p.pno||'';
 if(p.ed){var d=new Date(p.ed+'T00:00:00');d.setDate(d.getDate()+1);$('sd').value=iso(d);calcEd()}
 vis()}
 /* Monthly report */
-function setView(v){['Pol','Ren','Rep'].forEach(function(n){var on=(v==='pol'&&n==='Pol')||(v==='ren'&&n==='Ren')||(v==='rep'&&n==='Rep');$('v'+n).classList.toggle('hide',!on);$('t'+n).classList.toggle('on',on)});
-if(v==='pol')render();if(v==='ren')renderRen();
+function setView(v){var map={tod:'Tod',pol:'Pol',ren:'Ren',lead:'Lead',pos:'Pos',rep:'Rep'};
+Object.keys(map).forEach(function(k){var on=v===k;$('v'+map[k]).classList.toggle('hide',!on);$('t'+map[k]).classList.toggle('on',on)});
+var f=$('fab');f.textContent=v==='lead'?'＋ New Lead':'＋ New Policy';f.onclick=v==='lead'?function(){openLead()}:function(){openForm()};$('hadd').textContent=v==='lead'?'＋ New lead':'＋ New policy';
+if(v==='tod')renderToday();if(v==='pol')render();if(v==='ren')renderRen();if(v==='lead')renderLeads();
+if(v==='pos')pLoad();
 if(v==='rep'){if(!repInit){repInit=1;$('rsel').value='this';perDates('r','this')}rep()}window.scrollTo(0,0)}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function bdate(p){if(p.sd)return p.sd;var t=parseInt(p.id,36);if(!isFinite(t)||t<1e11)return '';return iso(new Date(t))}
@@ -528,7 +1007,7 @@ return ks.length?ks.map(function(k){return '<div class="gr"><span>'+esc(k)+'</sp
 function rep(){var f=$('rf').value,t=$('rt').value;
 var L=data.filter(function(p){var d=bdate(p);if(!d)return false;if(f&&d<f)return false;if(t&&d>t)return false;return true}).sort(function(a,b){return bdate(a)<bdate(b)?1:-1});
 var prem=0,rec=0,po=0,M={};
-L.forEach(function(p){prem+=+p.pr||0;rec+=+p.pay||0;po+=+p.po||0;var k=bdate(p).slice(0,7),o=M[k]||(M[k]={n:0,pr:0});o.n++;o.pr+=+p.pr||0});
+L.forEach(function(p){prem+=+p.pr||0;rec+=+p.pay||0;po+=+p.po||0;var k=bdate(p).slice(0,7),o=M[k]||(M[k]={n:0,pr:0,po:0});o.n++;o.pr+=+p.pr||0;o.po+=+p.po||0});
 $('rs').innerHTML=[['Policies booked',L.length],['Total premium',inr(prem)],['Payment received',inr(rec)],['Balance due',inr(Math.max(0,prem-rec))],['Payout',inr(po)]].map(function(s){return '<div class="st"><b>'+s[1]+'</b><span>'+s[0]+'</span></div>'}).join('');
 var keys;
 if(f&&t){keys=[];var a=new Date(+f.slice(0,4),+f.slice(5,7)-1,1),e=new Date(+t.slice(0,4),+t.slice(5,7)-1,1),c=0;
@@ -537,6 +1016,8 @@ else keys=Object.keys(M).sort().reverse();
 var mx=Math.max.apply(null,keys.map(function(k){return (M[k]||{n:0}).n}).concat([1]));
 $('rm').innerHTML=keys.length?keys.map(function(k){var o=M[k]||{n:0,pr:0};
 return '<div class="mr" onclick="pickMonth(\''+k+'\')"><div>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-IN',{month:'long',year:'numeric'})+'</div><div class="mb"><i style="width:'+Math.round(o.n/mx*100)+'%"></i></div><div><b>'+o.n+'</b> '+(o.n===1?'policy':'policies')+'</div><div class="mp">'+inr(o.pr)+'</div></div>'}).join(''):'<small style="color:var(--mut)">No policies in this period.</small>';
+var mxp=Math.max.apply(null,keys.map(function(k){return (M[k]||{po:0}).po}).concat([1]));
+$('rcm').innerHTML=keys.length?keys.map(function(k){var o=M[k]||{po:0};return '<div class="mc"><div>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-IN',{month:'short',year:'numeric'})+'</div><div class="mb"><i style="width:'+Math.round(o.po/mxp*100)+'%"></i></div><div>'+inr(o.po)+'</div></div>'}).join(''):'<small style="color:var(--mut)">No data</small>';
 $('rc').innerHTML=grp(L,'co');$('rtp').innerHTML=grp(L,'ty');
 $('rl').innerHTML=L.length?L.slice(0,200).map(function(p){return '<div class="lr"><span>'+fd(bdate(p))+'</span><span><b>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</b><small>'+esc(p.co)+' · '+esc(p.ty)+' · '+esc(p.pno)+'</small></span><span>'+inr(p.pr)+'</span></div>'}).join(''):'<small style="color:var(--mut)">No policies booked in this period.</small>'}
 
@@ -566,15 +1047,15 @@ var t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired '+(-d)+'d ago']:d===0?['t-
 var mode=need?'ren':du?'pay':'hi',wl=mode==='ren'?'WhatsApp renewal':mode==='pay'?'WhatsApp payment':'WhatsApp',wf=mode==='ren'?'wa':mode==='pay'?'waPay':'waHi';
 var q=function(f,l,c){return '<button class="btn sm '+(c||'ghost')+'" onclick="'+f+'(\''+id+'\')">'+l+'</button>'};
 var info='<div class="kv" style="margin:10px 0"><div><span>Type</span>'+esc(p.ty)+'</div><div><span>Received</span>'+inr(p.pay)+'</div><div><span>Start date</span>'+fd(p.sd)+'</div>'+
-(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+
+(p.dc?'<div><span>Discount</span>'+esc(p.dc)+'%</div>':'')+(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+
 ((p.vm||p.vt)?'<div style="grid-column:1/-1"><span>Vehicle</span>'+esc(p.vt)+(p.vm?' · '+esc(p.vm):'')+'</div>':'')+'</div>';
 var extra='<div class="acts">'+(du&&mode!=='pay'?q('waPay','Payment reminder'):'')+(!rb&&mode!=='ren'?q('wa','Renewal message'):'')+(!rb&&!need?q('renew','Renew'):'')+
-q('pdf','Summary PDF')+(p.pdfName?q('viewCopy','Policy copy'):'')+q('openForm','Edit')+q('del','Delete')+'</div>';
-return '<div class="pc"><div class="row"><div><h3>'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</h3><small>+91 '+esc(p.mob)+' · '+esc(p.co)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span></div>'+
+q('pdf','Summary PDF')+'<button class="btn sm ghost" onclick="openDocs(\''+p.mob+'\')">Documents</button>'+(p.pdfName?q('viewCopy','Policy copy'):'')+q('openForm','Edit')+q('del','Delete')+'</div>';
+return '<div class="pc"><div class="row"><div><h3 class="lnk" onclick="openCust(\''+p.mob+'\')">'+esc(p.name)+(p.vn?' · '+esc(p.vn):'')+'</h3><small>+91 '+esc(p.mob)+' · '+esc(p.co)+'</small></div><span class="tag '+t[0]+'">'+t[1]+'</span></div>'+
 '<div class="kv" style="grid-template-columns:1fr 1fr 1.2fr"><div><span>Policy no.</span>'+esc(p.pno)+'</div><div><span>Expiry</span>'+fd(p.ed)+'</div><div><span>Premium</span>'+inr(p.pr)+(du?' <small style="color:var(--bad)">(due '+inr(du)+')</small>':'')+'</div></div>'+
 '<div class="acts">'+q(wf,wl,'wa')+q('callp','Call','call')+(need?q('renew','Renew',''):'')+'<button class="btn sm ghost" id="mb-'+id+'" onclick="tgl(\''+id+'\')">More ▾</button></div>'+
 '<div class="more hide" id="mo-'+id+'">'+info+extra+'</div></div>'}
-function render(){if($('vRep')&&!$('vRep').classList.contains('hide'))setTimeout(rep,0);if($('vRen')&&!$('vRen').classList.contains('hide'))setTimeout(renderRen,0);
+function render(){if($('vTod')&&!$('vTod').classList.contains('hide'))setTimeout(renderToday,0);if($('vLead')&&!$('vLead').classList.contains('hide'))setTimeout(renderLeads,0);if($('vRep')&&!$('vRep').classList.contains('hide'))setTimeout(rep,0);if($('vRen')&&!$('vRen').classList.contains('hide'))setTimeout(renderRen,0);
 if(!P.init){P.init=1;$('psel').value='this';perDates('p','this')}
 var f=$('pf').value,t=$('pt').value,q=$('q').value.trim().toLowerCase(),qv=q.replace(/[\s-]/g,'');
 var inP=data.filter(function(p){var d=bdate(p);if(!d)return false;if(f&&d<f)return false;if(t&&d>t)return false;return true});
@@ -591,9 +1072,14 @@ var L=null,title='';
 if(q){L=data.filter(function(p){return [p.name,p.mob,p.pno,p.co,p.ty,p.vm,p.vn].join(' ').toLowerCase().indexOf(q)>-1||(p.vn&&qv&&p.vn.toLowerCase().indexOf(qv)>-1)}).sort(function(a,b){return days(a.ed)-days(b.ed)});title='Search results for “'+esc($('q').value.trim())+'”'}
 else if(P.show==='booked'){L=inP.slice().sort(byDate);title='Policies booked in this period'}
 else if(P.show==='due'){L=dueL.slice().sort(byDate);title='Policies with payment due'}
+else if(P.show==='dueall'){L=data.filter(function(p){return dueAmt(p)>0}).sort(function(a,b){return dueAmt(b)-dueAmt(a)});title='All policies with payment due'}
+if(L===null&&wide()&&!P.hideAll){L=inP.slice().sort(byDate);title='All policies in the selected period'}
 if(L===null){$('lh').innerHTML='<div class="empty" style="padding:26px 10px">Tap a number above to see those policies, or search by name, mobile number or vehicle number.</div>';$('list').innerHTML='';return}
-$('lh').innerHTML='<div class="row" style="margin:6px 0 12px;align-items:center"><b>'+title+' · '+L.length+'</b>'+(q?'':'<button class="btn ghost sm" onclick="P.show=null;render()">Hide list</button>')+'</div>';
-$('list').innerHTML=L.length?L.map(card).join(''):'<div class="empty">No policies found.</div>'}
+$('lh').innerHTML='<div class="row" style="margin:6px 0 12px;align-items:center"><b>'+title+' · '+L.length+'</b>'+(q||P.show===null?'':'<button class="btn ghost sm" onclick="P.show=null;render()">Hide list</button>')+'</div>';
+$('list').classList.toggle('plain',wide());$('list').innerHTML=L.length?(wide()?tbl(L):L.map(card).join('')):'<div class="empty">No policies found.</div>'}
+function wide(){return !!(window.matchMedia&&matchMedia('(min-width:900px)').matches)}
+function stTag(p){var rb=renewedBy(p),d=days(p.ed);return rb?['t-ok','Renewed']:d<0?['t-bad','Expired']:d<=30?['t-warn',d+' days left']:['t-ok','Active']}
+function tbl(L){return '<div class="tw"><table class="dt"><thead><tr><th>Customer</th><th>Company</th><th>Type</th><th>Policy no.</th><th>Expiry</th><th class="r">Premium</th><th class="r">Due</th><th>Status</th><th></th></tr></thead><tbody>'+L.map(function(p){var t=stTag(p),du=dueAmt(p),rb=renewedBy(p);return '<tr><td><b class="lnk" onclick="openCust(\''+p.mob+'\')">'+esc(p.name)+'</b><br><small style="color:var(--mut)">+91 '+esc(p.mob)+(p.vn?' · '+esc(p.vn):'')+'</small></td><td>'+esc(p.co)+'</td><td>'+esc(p.ty)+'</td><td>'+esc(p.pno)+'</td><td>'+fd(p.ed)+'</td><td class="r">'+inr(p.pr)+'</td><td class="r">'+(du?'<b style="color:var(--bad)">'+inr(du)+'</b>':'—')+'</td><td><span class="tag '+t[0]+'">'+t[1]+'</span></td>'+'<td class="r"><button class="btn sm wa" onclick="'+(rb?'waHi':du?'waPay':'wa')+'(\''+p.id+'\')">WhatsApp</button> <button class="btn sm ghost" onclick="openForm(\''+p.id+'\')">Edit</button></td></tr>'}).join('')+'</tbody></table></div>'}
 function rseg(s){R.seg=s;R.f='all';renderRen()}
 function rflt(f){R.f=f;renderRen()}
 function renderRen(){var next=[],last=[],over=[];
@@ -608,6 +1094,7 @@ if(R.seg!=='over'){h+='<div class="qrow">'+[['all','All',cur.length],['pend','No
 var L=R.seg==='over'?cur:R.f==='pend'?pend:R.f==='done'?done:(R.seg==='next'?pend.concat(done):cur);
 $('rnTop').innerHTML=h;
 $('rnList').innerHTML=L.length?L.map(card).join(''):'<div class="empty">'+(R.seg==='next'?'No policies expiring in the next 30 days.':R.seg==='last'?'No policies expired in the last 30 days.':'No overdue policies.')+'</div>'}
+if(window.matchMedia){matchMedia('(min-width:900px)').addEventListener('change',function(){if(authed){render();renderRen();renderToday()}})}
 if(!sb){$('demo').classList.remove('hide');$('demo').innerHTML='<b>Demo mode:</b> cloud is not configured, so accounts and data stay in this browser only.';cstat('Local only (demo mode)',1)}
 enter();
 </script>
