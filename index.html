@@ -512,7 +512,7 @@ header #hadd{background:var(--pri);color:#fff}
       <div><label>Amount without GST (₹)</label><input id="am" type="number" inputmode="decimal" oninput="calcAm()"></div>
       <div><label>Discount (₹)</label><input id="dc" type="number" inputmode="decimal" placeholder="e.g. 1000" oninput="calcAm()"></div>
       <div><label>Premium incl. 18% GST (₹)</label><input id="pr" type="number" inputmode="decimal"></div>
-      <div class="full" style="margin-top:-4px"><span class="fl">Discount is taken off the amount before GST. Premium = (amount − discount) + 18% GST, auto-filled and editable. Payout is calculated on the amount after discount.</span><span class="fl" id="dcs" style="color:var(--pri);font-weight:600"></span></div>
+      <div class="full" style="margin-top:-4px"><span class="fl">Premium = amount + 18% GST − discount, auto-filled and editable. Payout is calculated on the amount without GST.</span><span class="fl" id="dcs" style="color:var(--pri);font-weight:600"></span></div>
       <div class="full"><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
       <div><label>Payout (%)</label><input id="pc" type="number" inputmode="decimal" oninput="calcPo()" placeholder="e.g. 50"></div>
       <div><label>Payout amount (₹)</label><input id="po" type="number" inputmode="decimal"></div>
@@ -976,8 +976,8 @@ if(src==='vn'){$('ty').value='Motor';vis();if(p.vt)$('vt').value=p.vt;if(!$('vm'
 vnList()}
 /* Auto-calculations, renewals */
 function n2(x){return String(Math.round(x*100)/100)}
-function calcAm(){var a=parseFloat($('am').value),d=parseFloat($('dc').value)||0;if(isNaN(a)){$('dcs').textContent='';return}var n=a-d;$('pr').value=n2(n*1.18);$('dcs').textContent=d?'Discount ₹'+n2(d)+' · after discount ₹'+n2(n)+' · premium with GST ₹'+n2(n*1.18):'';calcPo()}
-function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value),d=parseFloat($('dc').value)||0;if(isNaN(a)||isNaN(c))return;$('po').value=n2((a-d)*c/100)}
+function calcAm(){var a=parseFloat($('am').value),d=parseFloat($('dc').value)||0;if(isNaN(a)){$('dcs').textContent='';return}var g=a*1.18,n=g-d;$('pr').value=n2(n);$('dcs').textContent='Amount + 18% GST ₹'+n2(g)+(d?' − discount ₹'+n2(d):'')+' = premium ₹'+n2(n);calcPo()}
+function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value);if(isNaN(a)||isNaN(c))return;$('po').value=n2(a*c/100)}
 function calcEd(){var v=$('sd').value;if(!v)return;var d=new Date(v+'T00:00:00');$('ed').value=iso(new Date(d.getFullYear()+1,d.getMonth(),d.getDate()-1))}
 function renewedBy(p){var b=bdate(p),best=null;
 for(var i=0;i<data.length;i++){var q=data[i];if(q.id===p.id)continue;var qb=bdate(q);
