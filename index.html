@@ -510,7 +510,7 @@ header #hadd{background:var(--pri);color:#fff}
       <div class="full vh"><label>Vehicle model</label><input id="vm" placeholder="e.g. Swift VXi 2021" list="dlVm" autocomplete="off"><datalist id="dlVm"></datalist></div>
       <div class="full sh">Amount</div>
       <div><label>Amount without GST (₹)</label><input id="am" type="number" inputmode="decimal" oninput="calcAm()"></div>
-      <div><label>Discount (%)</label><input id="dc" type="number" inputmode="decimal" placeholder="e.g. 10" oninput="calcAm()"></div>
+      <div><label>Discount (₹)</label><input id="dc" type="number" inputmode="decimal" placeholder="e.g. 1000" oninput="calcAm()"></div>
       <div><label>Premium incl. 18% GST (₹)</label><input id="pr" type="number" inputmode="decimal"></div>
       <div class="full" style="margin-top:-4px"><span class="fl">Discount is taken off the amount before GST. Premium = (amount − discount) + 18% GST, auto-filled and editable. Payout is calculated on the amount after discount.</span><span class="fl" id="dcs" style="color:var(--pri);font-weight:600"></span></div>
       <div class="full"><label>Payment received (₹)</label><input id="pay" type="number" inputmode="decimal"></div>
@@ -686,7 +686,7 @@ function callp(id){var p=data.find(function(x){return x.id===id});location.href=
 async function pdf(id){var p=data.find(function(x){return x.id===id});
 try{var J=window.jspdf.jsPDF,d=new J();d.setFillColor(79,70,229);d.rect(0,0,210,28,'F');d.setTextColor(255);d.setFontSize(20);d.text('PolicyCare',14,18);d.setFontSize(10);d.text('Policy Summary',160,18);
 d.setTextColor(20);var rows=[['Customer',p.name],['Mobile','+91 '+p.mob],['Policy number',p.pno],['Insurance company',p.co],['Insurance type',p.ty]];
-if(p.dc)rows.push(['Discount',p.dc+'%']);if(p.vm||p.vn)rows.push(['Vehicle',[p.vt,p.vm,p.vn].filter(Boolean).join(' - ')]);
+if(p.dc)rows.push(['Discount','Rs. '+(Number(p.dc)||0).toLocaleString('en-IN')]);if(p.vm||p.vn)rows.push(['Vehicle',[p.vt,p.vm,p.vn].filter(Boolean).join(' - ')]);
 rows.push(['Premium','Rs. '+(Number(p.pr)||0).toLocaleString('en-IN')],['Payment received','Rs. '+(Number(p.pay)||0).toLocaleString('en-IN')],['Balance','Rs. '+Math.max(0,(Number(p.pr)||0)-(Number(p.pay)||0)).toLocaleString('en-IN')],['Start date',fd(p.sd)],['Expiry / renewal',fd(p.ed)]);
 var y=46;d.setFontSize(12);rows.forEach(function(r){d.setTextColor(110);d.text(r[0],16,y);d.setTextColor(20);d.text(String(r[1]),80,y);d.setDrawColor(228);d.line(14,y+3,196,y+3);y+=12});
 d.setFontSize(9);d.setTextColor(130);d.text('Generated on '+new Date().toLocaleDateString('en-IN')+' via PolicyCare',14,285);
@@ -976,8 +976,8 @@ if(src==='vn'){$('ty').value='Motor';vis();if(p.vt)$('vt').value=p.vt;if(!$('vm'
 vnList()}
 /* Auto-calculations, renewals */
 function n2(x){return String(Math.round(x*100)/100)}
-function calcAm(){var a=parseFloat($('am').value),d=parseFloat($('dc').value)||0;if(isNaN(a)){$('dcs').textContent='';return}var n=a-a*d/100;$('pr').value=n2(n*1.18);$('dcs').textContent=d?'Discount ₹'+n2(a*d/100)+' · after discount ₹'+n2(n)+' · premium with GST ₹'+n2(n*1.18):'';calcPo()}
-function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value),d=parseFloat($('dc').value)||0;if(isNaN(a)||isNaN(c))return;$('po').value=n2((a-a*d/100)*c/100)}
+function calcAm(){var a=parseFloat($('am').value),d=parseFloat($('dc').value)||0;if(isNaN(a)){$('dcs').textContent='';return}var n=a-d;$('pr').value=n2(n*1.18);$('dcs').textContent=d?'Discount ₹'+n2(d)+' · after discount ₹'+n2(n)+' · premium with GST ₹'+n2(n*1.18):'';calcPo()}
+function calcPo(){var a=parseFloat($('am').value),c=parseFloat($('pc').value),d=parseFloat($('dc').value)||0;if(isNaN(a)||isNaN(c))return;$('po').value=n2((a-d)*c/100)}
 function calcEd(){var v=$('sd').value;if(!v)return;var d=new Date(v+'T00:00:00');$('ed').value=iso(new Date(d.getFullYear()+1,d.getMonth(),d.getDate()-1))}
 function renewedBy(p){var b=bdate(p),best=null;
 for(var i=0;i<data.length;i++){var q=data[i];if(q.id===p.id)continue;var qb=bdate(q);
@@ -1047,7 +1047,7 @@ var t=rb?['t-ok','Renewed ✓']:d<0?['t-bad','Expired '+(-d)+'d ago']:d===0?['t-
 var mode=need?'ren':du?'pay':'hi',wl=mode==='ren'?'WhatsApp renewal':mode==='pay'?'WhatsApp payment':'WhatsApp',wf=mode==='ren'?'wa':mode==='pay'?'waPay':'waHi';
 var q=function(f,l,c){return '<button class="btn sm '+(c||'ghost')+'" onclick="'+f+'(\''+id+'\')">'+l+'</button>'};
 var info='<div class="kv" style="margin:10px 0"><div><span>Type</span>'+esc(p.ty)+'</div><div><span>Received</span>'+inr(p.pay)+'</div><div><span>Start date</span>'+fd(p.sd)+'</div>'+
-(p.dc?'<div><span>Discount</span>'+esc(p.dc)+'%</div>':'')+(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+
+(p.dc?'<div><span>Discount</span>'+inr(p.dc)+'</div>':'')+(p.po?'<div><span>Payout</span>'+inr(p.po)+(p.pc?' ('+esc(p.pc)+'%)':'')+'</div>':'')+(rb?'<div><span>Renewed on</span>'+fd(bdate(rb))+'</div>':'')+
 ((p.vm||p.vt)?'<div style="grid-column:1/-1"><span>Vehicle</span>'+esc(p.vt)+(p.vm?' · '+esc(p.vm):'')+'</div>':'')+'</div>';
 var extra='<div class="acts">'+(du&&mode!=='pay'?q('waPay','Payment reminder'):'')+(!rb&&mode!=='ren'?q('wa','Renewal message'):'')+(!rb&&!need?q('renew','Renew'):'')+
 q('pdf','Summary PDF')+'<button class="btn sm ghost" onclick="openDocs(\''+p.mob+'\')">Documents</button>'+(p.pdfName?q('viewCopy','Policy copy'):'')+q('openForm','Edit')+q('del','Delete')+'</div>';
